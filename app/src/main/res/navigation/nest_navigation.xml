@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nest_navigation"
+    app:startDestination="@id/nestIntroFragment">
+
+    <fragment
+        android:id="@+id/nestIntroFragment"
+        android:name="com.example.safenest.ui.nest.NestIntroFragment"
+        android:label="fragment_nest_intro"
+        tools:layout="@layout/fragment_nest_intro" />
+</navigation>

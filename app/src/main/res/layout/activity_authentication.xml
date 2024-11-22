@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AuthenticationActivity">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/authTab"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_max_bigger"
+        android:background="@color/white"
+        android:contentDescription="Authentication tabs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabIndicatorColor="@color/secondary_blue"
+        app:tabIndicatorFullWidth="true"
+        app:tabInlineLabel="true"
+        app:tabSelectedTextColor="@color/primary_blue"
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
+        app:tabTextColor="@color/dark_grey" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/authViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/authTab" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,70 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="size_default_margin">35dp</dimen>
+
+    <dimen name="size_max_large_upload_photo">80dp</dimen>
+    <dimen name="size_max_large_button">74dp</dimen>
+    <dimen name="size_max_large">40dp</dimen>
+    <dimen name="size_large_button">56dp</dimen>
+    <dimen name="size_custom_max">39dp</dimen>
+    <dimen name="size_less_max_large">35dp</dimen>
+    <dimen name="size_little_max_large">30dp</dimen>
+    <dimen name="size_max_bigger">50dp</dimen>
+    <dimen name="size_extra_large">25dp</dimen>
+    <dimen name="size_large">20dp</dimen>
+    <dimen name="size_standard">15dp</dimen>
+    <dimen name="size_medium">10dp</dimen>
+    <dimen name="size_small">5dp</dimen>
+    <dimen name="size_little_large_small">6dp</dimen>
+    <dimen name="small_padding">3dp</dimen>
+    <dimen name="smallest_padding">2dp</dimen>
+    <dimen name="lowest_smallest_padding">2dp</dimen>
+
+    <dimen name="size_standard_txt">14sp</dimen>
+    <dimen name="size_standard_large_txt">16sp</dimen>
+    <dimen name="size_more_standard_large_txt">16.91sp</dimen>
+    <dimen name="size_standard_medium_large_txt">17sp</dimen>
+    <dimen name="size_label_large">36sp</dimen>
+    <dimen name="size_label">31sp</dimen>
+    <dimen name="size_label_medium">18sp</dimen>
+    <dimen name="size_label_standard">24sp</dimen>
+    <dimen name="size_label_posts">21sp</dimen>
+    <dimen name="size_subtitle">20sp</dimen>
+    <dimen name="size_small_txt">13sp</dimen>
+    <dimen name="size_smaller_txt">12sp</dimen>
+    <dimen name="size_smallest_txt">11sp</dimen>
+    <dimen name="size_more_smallest_txt">10sp</dimen>
+    <dimen name="size_custom_smallest_txt">10.15sp</dimen>
+    <dimen name="size_most_smallest_txt">9sp</dimen>
+    <dimen name="size_label_large_little">35sp</dimen>
+    <dimen name="size_label_large_extra">40sp</dimen>
+
+    <dimen name="size_border">1.5dp</dimen>
+    <dimen name="size_smaller_margin">7dp</dimen>
+    <dimen name="size_smallest_margin">6dp</dimen>
+    <dimen name="size_border_curve">12dp</dimen>
+    <dimen name="size_large_height">188dp</dimen>
+    <dimen name="size_more_large_height">189dp</dimen>
+    <dimen name="size_large_width">152dp</dimen>
+    <dimen name="size_large_margin">70dp</dimen>
+    <dimen name="size_large_padding">100dp</dimen>
+    <dimen name="size_large_more_padding">110dp</dimen>
+    <dimen name="size_large_more_width">120dp</dimen>
+    <dimen name="size_large_custom_padding">115dp</dimen>
+    <dimen name="size_large_little_more_padding">130dp</dimen>
+    <dimen name="size_large_big_padding">200dp</dimen>
+    <dimen name="size_image_post">336dp</dimen>
+    <dimen name="size_smallest_width">1dp</dimen>
+    <dimen name="custom_image_width">105.17dp</dimen>
+    <dimen name="custom_height">104.33dp</dimen>
+    <dimen name="custom_width">216.76dp</dimen>
+    <dimen name="custom_width_img">122dp</dimen>
+    <dimen name="custom_height_img">125dp</dimen>
+    <dimen name="big_width">169dp</dimen>
+    <dimen name="custom_standard_height">61.51dp</dimen>
+    <dimen name="custom_button_height">82.47dp</dimen>
+
+</resources>
