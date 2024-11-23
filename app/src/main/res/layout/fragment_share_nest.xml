@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.nest.ShareNestFragment">
+
+    <TextView
+        android:id="@+id/btnBack"
+        style="@style/Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:clickable="true"
+        android:contentDescription="Skip"
+        android:focusable="true"
+        android:padding="@dimen/size_small"
+        android:text="Skip"
+        android:textColor="@color/primary_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtShareCode"
+        style="@style/Subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:text="Share this invitation code with your family"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/size_small"
+        app:cardCornerRadius="@dimen/size_standard"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginTop="@dimen/size_max_bigger"
+        android:layout_marginEnd="@dimen/size_large"
+        app:layout_constraintTop_toBottomOf="@id/txtShareCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" >
+        <TextView
+            android:id="@+id/txtNestCode"
+            style="@style/Subtitle"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_large"
+            android:text="ABCDEF"
+            app:layout_constraintTop_toBottomOf="@+id/btnBack" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnShareCode"
+        style="@style/Widget.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_standard"
+        android:layout_marginTop="@dimen/size_max_bigger"
+        android:layout_marginRight="@dimen/size_standard"
+        android:text="Share Code"
+        android:textAppearance="@style/Medium.Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardCode" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

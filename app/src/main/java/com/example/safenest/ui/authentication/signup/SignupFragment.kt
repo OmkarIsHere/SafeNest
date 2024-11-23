@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.safenest.databinding.FragmentSignupBinding
-import com.example.safenest.NestActivity
+import com.example.safenest.ui.NestActivity
 
 class SignupFragment : Fragment() {
 

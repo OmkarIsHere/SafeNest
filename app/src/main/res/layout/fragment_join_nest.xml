@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.nest.JoinNestFragment">
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginTop="@dimen/size_large"
+        android:background="@drawable/rounded_corner_grey_box"
+        android:contentDescription="Back Button"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/size_small"
+        android:src="@drawable/ic_baseline_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtEnterInvitationCode"
+        style="@style/Subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:text="Join a nest? Enter your invitation code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/btnBack"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nCodeInputLayout"
+        style="@style/textInputLayoutStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_less_max_large"
+        android:layout_marginStart="@dimen/size_standard"
+        android:layout_marginEnd="@dimen/size_standard"
+        android:hint="Enter invitation code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtEnterInvitationCode">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtNestCode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnJoinNest"
+        style="@style/Widget.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_standard"
+        android:layout_marginRight="@dimen/size_standard"
+        android:layout_marginTop="@dimen/size_max_bigger"
+        android:text="Continue"
+        android:textAppearance="@style/Medium.Button"
+        app:layout_constraintTop_toBottomOf="@id/nCodeInputLayout"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtDontHaveCode"
+        style="@style/Medium.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have a code?"
+        app:layout_constraintBottom_toTopOf="@+id/txtCreateNest"
+        android:layout_marginBottom="@dimen/size_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtCreateNest"
+        style="@style/Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:text="Create a Nest"
+        android:clickable="true"
+        android:textColor="@color/primary_blue"
+        android:layout_marginBottom="@dimen/size_less_max_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

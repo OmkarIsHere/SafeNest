@@ -9,5 +9,32 @@
         android:id="@+id/nestIntroFragment"
         android:name="com.example.safenest.ui.nest.NestIntroFragment"
         android:label="fragment_nest_intro"
-        tools:layout="@layout/fragment_nest_intro" />
+        tools:layout="@layout/fragment_nest_intro" >
+        <action
+            android:id="@+id/action_nestIntroFragment_to_joinNestFragment"
+            app:destination="@id/joinNestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createNestFragment"
+        android:name="com.example.safenest.ui.nest.CreateNestFragment"
+        android:label="fragment_create_nest"
+        tools:layout="@layout/fragment_create_nest" >
+        <action
+            android:id="@+id/action_createNestFragment_to_shareNestFragment"
+            app:destination="@id/shareNestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/joinNestFragment"
+        android:name="com.example.safenest.ui.nest.JoinNestFragment"
+        android:label="fragment_join_nest"
+        tools:layout="@layout/fragment_join_nest" >
+        <action
+            android:id="@+id/action_joinNestFragment_to_createNestFragment"
+            app:destination="@id/createNestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shareNestFragment"
+        android:name="com.example.safenest.ui.nest.ShareNestFragment"
+        android:label="fragment_share_nest"
+        tools:layout="@layout/fragment_share_nest" />
 </navigation>
