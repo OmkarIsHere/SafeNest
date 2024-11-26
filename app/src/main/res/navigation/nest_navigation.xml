@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nestIntroFragment"
-        android:name="com.example.safenest.ui.nest.NestIntroFragment"
+        android:name="com.safenest.app.ui.nest.NestIntroFragment"
         android:label="fragment_nest_intro"
         tools:layout="@layout/fragment_nest_intro" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/createNestFragment"
-        android:name="com.example.safenest.ui.nest.CreateNestFragment"
+        android:name="com.safenest.app.ui.nest.CreateNestFragment"
         android:label="fragment_create_nest"
         tools:layout="@layout/fragment_create_nest" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/joinNestFragment"
-        android:name="com.example.safenest.ui.nest.JoinNestFragment"
+        android:name="com.safenest.app.ui.nest.JoinNestFragment"
         android:label="fragment_join_nest"
         tools:layout="@layout/fragment_join_nest" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/shareNestFragment"
-        android:name="com.example.safenest.ui.nest.ShareNestFragment"
+        android:name="com.safenest.app.ui.nest.ShareNestFragment"
         android:label="fragment_share_nest"
         tools:layout="@layout/fragment_share_nest" />
 </navigation>

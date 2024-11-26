@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.safenest"
+    namespace = "com.safenest.app"//"com.example.safenest"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.safenest"
+        applicationId = "com.safenest.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -57,4 +57,8 @@ dependencies {
 
     //OTP view
     implementation(libs.otpview)
+
+    //Firebase
+    implementation(libs.firebase)
+    implementation(platform(libs.firebase.bom))
 }
