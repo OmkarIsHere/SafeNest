@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -59,6 +60,11 @@ dependencies {
     implementation(libs.otpview)
 
     //Firebase
-    implementation(libs.firebase)
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
+    //koin
+    implementation(libs.koin)
 }
