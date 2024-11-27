@@ -1,10 +1,10 @@
 package com.safenest.app.model
 
-class User {
-    val uId: String? = null
-    val uFirstName: String? = null
-    val uLastName: String? = null
-    val uEmail: String? = null
-    val uPhone: String? = null
-    val uPassword: String? = null
-}
+data class User (
+    var id: String? = null,
+    var firstName: String? = null,
+    var lastName: String? = null,
+    var email: String? = null,
+    var phone: String? = null,
+    var password: String? = null
+)

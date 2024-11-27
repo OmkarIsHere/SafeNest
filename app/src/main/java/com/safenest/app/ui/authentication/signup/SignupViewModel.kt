@@ -13,25 +13,84 @@ import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.safenest.app.constant.AppConstant
+import com.safenest.app.misc.Extension
 import com.safenest.app.model.User
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class SignupViewModel(private val auth : FirebaseAuth) : ViewModel() {
+class SignupViewModel(private val auth : FirebaseAuth, private val firestore : FirebaseFirestore) : ViewModel() {
 
     private val TAG = "SignupViewModel"
+
+    private lateinit var user:User
 
     private val _verificationId = MutableLiveData<String>()
 
     private val _authStatus = MutableLiveData<AuthState>()
     val authStatus: LiveData<AuthState> get() = _authStatus
 
+    private fun isValidCredentials(fName: String, lName: String, phone: String, email: String, password: String, cnfPassword: String): Boolean {
+        return Extension.isStringNotEmpty(fName) && Extension.isStringNotEmpty(lName) && Extension.isStringNotEmpty(email) && Extension.isStringNotEmpty(phone)
+                && Extension.isPasswordValid(password) && Extension.isStringNotEmpty(cnfPassword) && Extension.compareTwoString(password, cnfPassword)
+    }
+
+
+    private fun getValidationErrorMessage(fName: String, lName: String, userPhone: String, userEmail: String, userPassword: String, userCnfPassword: String): String {
+
+        if(Extension.isStringEmpty(fName))
+            return "Please enter a first Name"
+
+        if(Extension.isStringEmpty(lName))
+            return "Please enter a last Name"
+
+        if(Extension.isStringEmpty(userPhone))
+            return "Please enter phone number"
+
+        if(!Extension.isMobileValid(userPhone))
+            return "Please enter valid phone number"
+
+        if(Extension.isStringEmpty(userEmail))
+            return "Please enter a email address"
+
+        if(!Extension.isEmailValid(userEmail))
+            return "Please enter a valid email address"
+
+        if(Extension.isStringEmpty(userPassword))
+            return "Please enter a password"
+
+        if(!Extension.isPasswordValid(userPassword))
+            return "Password at least of 8 characters-\nOne uppercase character\nOne lowercase character\nOne Special character\nOne Numeric character"
+
+        if(!Extension.compareTwoString(userPassword,userCnfPassword))
+            return "Both password should be same"
+
+        return ""
+    }
+
+    fun signup(fName:String, lName:String, email:String, phone: String, password:String, cnfPassword:String){
+        if(isValidCredentials(fName, lName, email, phone, password, cnfPassword)){
+            val uPhone = "+91$phone"
+            user = User(
+                firstName = fName,
+                lastName = lName,
+                email = email,
+                phone = uPhone,
+                password = password
+            )
+            phoneAuthentication(uPhone)
+        }else{
+            _authStatus.postValue(AuthState.Failure(getValidationErrorMessage(fName, lName, phone,email, password, cnfPassword), true ))
+        }
+    }
+
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            Log.d(TAG, "onVerificationCompleted")
+            Log.d(TAG, "Verification Completed")
         }
         override fun onVerificationFailed(e: FirebaseException) {
-            Log.e(TAG, "onVerificationFailed", e)
+            _authStatus.postValue(AuthState.Failure(e.message!!, false))
             when (e) {
                 is FirebaseAuthInvalidCredentialsException -> {
                     Log.e(TAG, "FirebaseAuthInvalidCredentialsException", e)
@@ -52,7 +111,7 @@ class SignupViewModel(private val auth : FirebaseAuth) : ViewModel() {
         }
     }
 
-    fun phoneAuthentication(phone : String) {
+    private fun phoneAuthentication(phone : String) {
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phone)
             .setTimeout(60L, TimeUnit.SECONDS)
@@ -72,13 +131,26 @@ class SignupViewModel(private val auth : FirebaseAuth) : ViewModel() {
                 if (task.isSuccessful) {
                     task.result?.user?.let { firebaseUser ->
                         Log.d(TAG, "Credentials UId: ${firebaseUser.uid}, phoneNumber: ${firebaseUser.phoneNumber}")
-                        _authStatus.postValue(AuthState.Success("user"))
+                        user = user.copy( id = firebaseUser.uid)
+                        signupUser(user)
                     }
-
-                    _authStatus.postValue(AuthState.Success("Verification Completed"))
+//                    _authStatus.postValue(AuthState.Success("Verification Completed"))
                 } else {
-                    _authStatus.postValue(AuthState.Failure(task.exception?.message ?: "Sign-in failed"))
+                    Log.e(TAG, task.exception?.message!!)
+                    _authStatus.postValue(AuthState.Failure(task.exception?.message ?: "Sign up failed", false))
                 }
+            }
+    }
+
+    private fun signupUser(user: User){
+        val userCollection = firestore.collection(AppConstant.USER)
+        userCollection.add(user)
+            .addOnSuccessListener {
+                _authStatus.postValue(AuthState.Success("Sign up completed"))
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.message!!)
+                _authStatus.postValue(AuthState.Failure(exception.message ?: "Sign up failed",false))
             }
     }
 
@@ -86,6 +158,6 @@ class SignupViewModel(private val auth : FirebaseAuth) : ViewModel() {
 
 sealed class AuthState {
     data class Success(val successMessage: String) : AuthState()
-    data class Failure(val errorMessage: String) : AuthState()
+    data class Failure(val errorMessage: String, val isSignup: Boolean) : AuthState()
     data class CodeSent(val verificationId: String) : AuthState()
 }

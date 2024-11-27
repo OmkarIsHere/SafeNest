@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.ozcanalasalvar.otp_view.view.OtpView
 import com.safenest.app.databinding.FragmentSignupBinding
+import com.safenest.app.misc.Extension
 import com.safenest.app.ui.NestActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,7 +24,12 @@ class SignupFragment : Fragment() {
     private val signupViewModel: SignupViewModel by viewModel()
     private val binding get() = _binding!!
 
+    private lateinit var fName : TextInputEditText
+    private lateinit var lName : TextInputEditText
+    private lateinit var email : TextInputEditText
     private lateinit var phone : TextInputEditText
+    private lateinit var password : TextInputEditText
+    private lateinit var cnfPassword : TextInputEditText
     private lateinit var signup : Button
     private lateinit var verifyOtp : Button
     private lateinit var back : ImageView
@@ -43,7 +49,12 @@ class SignupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding){
+            fName = edtFirstName
+            lName = edtLastName
+            email = edtEmail
             phone = edtPhone
+            password = edtPassword
+            cnfPassword = edtCnfPassword
             signup = btnSignup
             verifyOtp = btnVerifyOtp
             back = btnBack
@@ -58,13 +69,19 @@ class SignupFragment : Fragment() {
         signupViewModel.authStatus.observe(viewLifecycleOwner) { authState ->
             when (authState) {
                 is AuthState.Success -> {
-                    Toast.makeText(context, "Welcome ${authState.successMessage}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, authState.successMessage, Toast.LENGTH_SHORT).show()
+                    redirectToNestScreen()
                     signupLayout.visibility = View.VISIBLE
                     otpVerificationLayout.visibility = View.GONE
-                    redirectToNestScreen()
                 }
                 is AuthState.Failure -> {
-                    Toast.makeText(context, "Error: ${authState.errorMessage}", Toast.LENGTH_LONG).show()
+                    loader.visibility = View.GONE
+                    if(authState.isSignup){
+                        signupLayout.visibility = View.VISIBLE
+                    }else{
+                        otpVerificationLayout.visibility = View.VISIBLE
+                    }
+                    Toast.makeText(context, authState.errorMessage, Toast.LENGTH_LONG).show()
                 }
                 is AuthState.CodeSent -> {
                     Toast.makeText(context, "Verification code has sent via sms", Toast.LENGTH_SHORT).show()
@@ -78,8 +95,14 @@ class SignupFragment : Fragment() {
         signup.setOnClickListener {
             loader.visibility = View.VISIBLE
             signupLayout.visibility = View.GONE
-            val phone = "+91"+ phone.text!!.trim().toString()
-            signupViewModel.phoneAuthentication(phone)
+            signupViewModel.signup(
+                Extension.trimString(fName.text.toString()),
+                Extension.trimString(lName.text.toString()),
+                Extension.trimString(email.text.toString()),
+                Extension.trimString(phone.text.toString()),
+                Extension.trimString(password.text.toString()),
+                Extension.trimString(cnfPassword.text.toString()),
+            )
         }
 
         back.setOnClickListener {
