@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
@@ -15,12 +14,12 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.safenest.app.constant.AppConstant
-import com.safenest.app.misc.Extension
+import com.safenest.app.util.Extension
 import com.safenest.app.model.User
-import kotlinx.coroutines.launch
+import com.safenest.app.util.SharedPrefManager
 import java.util.concurrent.TimeUnit
 
-class SignupViewModel(private val auth : FirebaseAuth, private val firestore : FirebaseFirestore) : ViewModel() {
+class SignupViewModel(private val auth : FirebaseAuth, private val firestore : FirebaseFirestore, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
 
     private val TAG = "SignupViewModel"
 
@@ -36,14 +35,13 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
                 && Extension.isPasswordValid(password) && Extension.isStringNotEmpty(cnfPassword) && Extension.compareTwoString(password, cnfPassword)
     }
 
-
     private fun getValidationErrorMessage(fName: String, lName: String, userPhone: String, userEmail: String, userPassword: String, userCnfPassword: String): String {
 
         if(Extension.isStringEmpty(fName))
-            return "Please enter a first Name"
+            return "Please enter a first name"
 
         if(Extension.isStringEmpty(lName))
-            return "Please enter a last Name"
+            return "Please enter a last name"
 
         if(Extension.isStringEmpty(userPhone))
             return "Please enter phone number"
@@ -77,7 +75,7 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
                 lastName = lName,
                 email = email,
                 phone = uPhone,
-                password = password
+                password = Extension.hashPassword(password)
             )
             phoneAuthentication(uPhone)
         }else{
@@ -90,7 +88,7 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
             Log.d(TAG, "Verification Completed")
         }
         override fun onVerificationFailed(e: FirebaseException) {
-            _authStatus.postValue(AuthState.Failure(e.message!!, false))
+            _authStatus.postValue(AuthState.Failure(e.message!!, true))
             when (e) {
                 is FirebaseAuthInvalidCredentialsException -> {
                     Log.e(TAG, "FirebaseAuthInvalidCredentialsException", e)
@@ -130,11 +128,9 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     task.result?.user?.let { firebaseUser ->
-                        Log.d(TAG, "Credentials UId: ${firebaseUser.uid}, phoneNumber: ${firebaseUser.phoneNumber}")
                         user = user.copy( id = firebaseUser.uid)
                         signupUser(user)
                     }
-//                    _authStatus.postValue(AuthState.Success("Verification Completed"))
                 } else {
                     Log.e(TAG, task.exception?.message!!)
                     _authStatus.postValue(AuthState.Failure(task.exception?.message ?: "Sign up failed", false))
@@ -143,15 +139,25 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
     }
 
     private fun signupUser(user: User){
-        val userCollection = firestore.collection(AppConstant.USER)
-        userCollection.add(user)
+        val userCollection = firestore.collection(AppConstant.USER).document(user.id!!)
+        userCollection.set(user)
             .addOnSuccessListener {
+                setDataToPreference(AppConstant.userId, user.id ?: "")
+                setDataToPreference(AppConstant.userFirstName, user.firstName ?: "")
+                setDataToPreference(AppConstant.userFirstName, user.lastName ?: "")
+                setDataToPreference(AppConstant.userEmail, user.email ?: "")
+                setDataToPreference(AppConstant.userPhone, user.phone ?: "")
+                setDataToPreference(AppConstant.userNest, user.nestId ?: "")
                 _authStatus.postValue(AuthState.Success("Sign up completed"))
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, exception.message!!)
                 _authStatus.postValue(AuthState.Failure(exception.message ?: "Sign up failed",false))
             }
+    }
+
+    private fun setDataToPreference(key: String, value: String){
+        sharedPrefManager.putString(key, value)
     }
 
 }

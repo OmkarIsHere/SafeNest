@@ -8,8 +8,12 @@ object AppConstant {
 
 
     //SharedPreference Constants
+    const val prefName = "UserData"
+
     const val userId = "USERID"
-    const val userName = "USERNAME"
+    const val userFirstName = "USERFIRSTNAME"
+    const val userLastName = "USERLASTNAME"
     const val userEmail = "USEREMAIL"
     const val userPhone = "USERPHONE"
+    const val userNest = "USERNEST"
 }

@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_small"
-            android:text="+919876543210"
+            android:text=""
             app:layout_constraintStart_toStartOf="@+id/txtSendCode"
             app:layout_constraintTop_toBottomOf="@+id/txtSendCode" />
 

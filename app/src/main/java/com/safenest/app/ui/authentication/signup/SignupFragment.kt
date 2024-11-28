@@ -9,12 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.ozcanalasalvar.otp_view.view.OtpView
 import com.safenest.app.databinding.FragmentSignupBinding
-import com.safenest.app.misc.Extension
+import com.safenest.app.util.Extension
 import com.safenest.app.ui.NestActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,6 +31,7 @@ class SignupFragment : Fragment() {
     private lateinit var phone : TextInputEditText
     private lateinit var password : TextInputEditText
     private lateinit var cnfPassword : TextInputEditText
+    private lateinit var phoneNo : TextView
     private lateinit var signup : Button
     private lateinit var verifyOtp : Button
     private lateinit var back : ImageView
@@ -55,6 +57,7 @@ class SignupFragment : Fragment() {
             phone = edtPhone
             password = edtPassword
             cnfPassword = edtCnfPassword
+            phoneNo = txtPhoneNo
             signup = btnSignup
             verifyOtp = btnVerifyOtp
             back = btnBack
@@ -73,6 +76,7 @@ class SignupFragment : Fragment() {
                     redirectToNestScreen()
                     signupLayout.visibility = View.VISIBLE
                     otpVerificationLayout.visibility = View.GONE
+                    loader.visibility = View.GONE
                 }
                 is AuthState.Failure -> {
                     loader.visibility = View.GONE
@@ -103,6 +107,7 @@ class SignupFragment : Fragment() {
                 Extension.trimString(password.text.toString()),
                 Extension.trimString(cnfPassword.text.toString()),
             )
+            phoneNo.text = "+91" + " "+ phone.text.toString()
         }
 
         back.setOnClickListener {
@@ -126,12 +131,13 @@ class SignupFragment : Fragment() {
                 override fun onTextChange(value: String, completed: Boolean) {
                     otp = value
                     if(completed){
+                        otpVerificationLayout.visibility = View.GONE
+                        loader.visibility = View.VISIBLE
                         signupViewModel.verifyCode(value)
                     }
                 }
             })
         }
-
     }
 
     private fun redirectToNestScreen(){

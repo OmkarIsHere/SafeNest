@@ -1,4 +1,6 @@
-package com.safenest.app.misc
+package com.safenest.app.util
+
+import java.security.MessageDigest
 
 class Extension {
 
@@ -34,6 +36,11 @@ class Extension {
         fun isPasswordValid(password: String): Boolean{
             val pattern = Regex("^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#\$%^&*()-_=+{};:,<.>]).{8,}$")
             return password.length >= 8 && pattern.matches(password)
+        }
+
+        fun hashPassword(password: String): String {
+            val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
+            return bytes.joinToString("") { "%02x".format(it) }
         }
 
     }
