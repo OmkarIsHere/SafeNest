@@ -21,8 +21,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
-    private val loginViewModel: LoginViewModel by viewModel()
     private val binding get() = _binding!!
+    private val loginViewModel: LoginViewModel by viewModel()
 
     private lateinit var email : TextInputEditText
     private lateinit var password : TextInputEditText

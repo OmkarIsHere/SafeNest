@@ -7,7 +7,7 @@
     tools:context=".ui.nest.ShareNestFragment">
 
     <TextView
-        android:id="@+id/btnBack"
+        android:id="@+id/txtSkip"
         style="@style/Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:text="Share this invitation code with your family"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
+        app:layout_constraintTop_toBottomOf="@+id/txtSkip" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardCode"
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/size_large"
-            android:text="ABCDEF"
+            android:text=""
             app:layout_constraintTop_toBottomOf="@+id/btnBack" />
     </androidx.cardview.widget.CardView>
 

@@ -11,6 +11,7 @@ import com.safenest.app.repository.AuthRepository
 import com.safenest.app.repository.AuthRepositoryImpl
 import com.safenest.app.ui.authentication.login.LoginViewModel
 import com.safenest.app.ui.authentication.signup.SignupViewModel
+import com.safenest.app.ui.nest.NestViewModel
 import com.safenest.app.util.SharedPrefManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -23,6 +24,7 @@ val appModule = module {
 
     viewModel { SignupViewModel(get(), get(), get()) }
     viewModel { LoginViewModel(get(), get()) }
+    viewModel { NestViewModel(get(), get()) }
 
     single { provideSharedPreferences(androidContext()) }
     single { SharedPrefManager(get()) }

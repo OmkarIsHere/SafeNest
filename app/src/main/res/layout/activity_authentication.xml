@@ -10,7 +10,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/authTab"
         android:layout_width="0dp"
-        android:layout_height="@dimen/size_max_bigger"
+        android:layout_height="@dimen/size_large_button"
         android:background="@color/white"
         android:contentDescription="Authentication tabs"
         app:layout_constraintEnd_toEndOf="parent"

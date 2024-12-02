@@ -12,12 +12,14 @@ import com.safenest.app.R
 import com.safenest.app.databinding.FragmentNestIntroBinding
 import com.safenest.app.databinding.FragmentSignupBinding
 import com.safenest.app.ui.authentication.signup.SignupViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class NestIntroFragment : Fragment() {
 
     private var _binding: FragmentNestIntroBinding? = null
     private val binding get() = _binding!!
 
+    private val nestViewModel: NestViewModel by activityViewModel()
     private lateinit var next : Button
 
     override fun onCreateView(
