@@ -34,7 +34,6 @@ android {
         }
     }
 
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -49,11 +48,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -86,4 +88,7 @@ dependencies {
 
     //koin
     implementation(libs.koin)
+
+    //Map
+    implementation(libs.google.map)
 }

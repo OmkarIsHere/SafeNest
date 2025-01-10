@@ -1,4 +1,4 @@
-package com.safenest.app.ui.home
+package com.safenest.app.ui.location
 
 import android.os.Build
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.safenest.app.databinding.FragmentHomeBinding
+import com.safenest.app.databinding.FragmentLocationBinding
 import android.Manifest
 import android.content.Intent
 import android.util.Log
@@ -14,12 +14,22 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.safenest.app.service.LocationService
 
-class HomeFragment : Fragment() {
+class LocationFragment : Fragment(), OnMapReadyCallback {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentLocationBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var map : MapView
+    private var googleMap: GoogleMap? = null
 
     private val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         arrayOf(
@@ -39,8 +49,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentLocationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -53,8 +62,10 @@ class HomeFragment : Fragment() {
             startService = btnStartService
             stopService = btnStopService
             requestPermissions = btnRequestPermissions
+            map = binding.mapView
         }
-
+            map.onCreate(savedInstanceState)
+            map.getMapAsync(this)
 
         // Check permissions
         if (!hasPermissions()) {
@@ -70,7 +81,7 @@ class HomeFragment : Fragment() {
                 requireActivity().startService(intent)
                 Log.d("LOCATION_SERVICE", "HomeFragment : Service started")
             } else {
-                Toast.makeText(requireActivity(), "Permissions not granted!", Toast.LENGTH_SHORT).show()
+                ActivityCompat.requestPermissions(requireActivity(), permissions, 101)
             }
         }
 
@@ -106,9 +117,45 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onMapReady(gMap: GoogleMap) {
+        googleMap = gMap
+        val defaultLocation = LatLng(-34.0, 151.0)
+        val location1 = LatLng(-33.91, 151.03)
+        val location2 = LatLng(-34.05, 151.15)
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 10f))
+        googleMap?.addMarker(MarkerOptions().position(defaultLocation).title("Marker in Sydney"))
+        googleMap?.addMarker(MarkerOptions().position(location1).title("Marker in Bankstown"))
+        googleMap?.addMarker(MarkerOptions().position(location2).title("Marker in Cronulla"))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        map.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        map.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        map.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        map.onLowMemory()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        map.onSaveInstanceState(outState)
+    }
+
 }

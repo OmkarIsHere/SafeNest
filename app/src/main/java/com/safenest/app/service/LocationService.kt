@@ -139,8 +139,8 @@ class LocationService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback) // Stop location updates
-        stopForeground(true) // Remove the foreground notification
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        stopForeground(true)
         Log.d("LOCATION_SERVICE", "Service destroyed")
     }
 }
