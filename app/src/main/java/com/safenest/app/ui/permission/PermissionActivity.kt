@@ -1,4 +1,4 @@
-package com.safenest.app.ui
+package com.safenest.app.ui.permission
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

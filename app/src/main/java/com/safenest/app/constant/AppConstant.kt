@@ -16,4 +16,8 @@ object AppConstant {
     const val userEmail = "USEREMAIL"
     const val userPhone = "USERPHONE"
     const val userNest = "USERNEST"
+
+    //Services
+    const val CHANNEL_ID = "channel_id"
+    const val CHANNEL_NAME = "channel_name"
 }

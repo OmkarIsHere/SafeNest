@@ -2,8 +2,6 @@ package com.safenest.app.repository
 
 import com.safenest.app.model.Response
 import com.safenest.app.model.User
-import com.safenest.app.ui.PermissionActivity
-import java.util.concurrent.TimeUnit
 
 typealias BookListResponse = Response<List<User>>
 typealias AddBookResponse = Response<String>

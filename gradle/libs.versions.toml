@@ -20,6 +20,7 @@ firebasebom = "33.6.0"
 koin = "3.5.0"
 firebaseAuth = "7.2.0"
 googleServices = "4.4.2"
+playServicesLocation = "21.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +43,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 
 [plugins]

@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.PermissionActivity">
+    tools:context=".ui.permission.PermissionActivity">
 
     <TextView
         android:id="@+id/txtPermission"
@@ -127,17 +127,17 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnShareCode"
-        style="@style/Widget.App.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_standard"
-        android:layout_marginBottom="@dimen/size_standard"
-        android:layout_marginRight="@dimen/size_standard"
-        android:text="Next"
-        android:textAppearance="@style/Medium.Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/btnShareCode"-->
+<!--        style="@style/Widget.App.Button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="@dimen/size_standard"-->
+<!--        android:layout_marginBottom="@dimen/size_standard"-->
+<!--        android:layout_marginRight="@dimen/size_standard"-->
+<!--        android:text="Next"-->
+<!--        android:textAppearance="@style/Medium.Button"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
