@@ -5,6 +5,7 @@ object AppConstant {
     //Collections
     const val USER = "User"
     const val NEST = "Nest"
+    const val LIVE_LOCATION = "Live_Location"
 
 
     //SharedPreference Constants

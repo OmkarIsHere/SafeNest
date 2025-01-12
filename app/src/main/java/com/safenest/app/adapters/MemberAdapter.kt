@@ -1,0 +1,32 @@
+package com.safenest.app.adapters
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.safenest.app.R
+
+
+class MemberAdapter(private val context: Context, private val members : ArrayList<String>) : RecyclerView.Adapter<MemberAdapter.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.member_card, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.memberName.text = members[position]
+    }
+
+    override fun getItemCount(): Int {
+        return members.size
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val memberName: TextView = itemView.findViewById(R.id.txtUserName)
+
+    }
+
+}

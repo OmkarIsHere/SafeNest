@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.firebase)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.database)
 
     //koin
     implementation(libs.koin)

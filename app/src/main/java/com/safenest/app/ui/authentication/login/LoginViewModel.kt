@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.safenest.app.constant.AppConstant
+import com.safenest.app.model.ResultState
 import com.safenest.app.util.Extension
 import com.safenest.app.util.SharedPrefManager
 
@@ -19,8 +20,8 @@ class LoginViewModel(private val firestore : FirebaseFirestore, private val shar
 //    private val _nestId = MutableLiveData<String>()
 //    val nestId: LiveData<String> get() = _nestId
 
-    private val _authStatus = MutableLiveData<AuthState>()
-    val authStatus: LiveData<AuthState> get() = _authStatus
+    private val _authStatus = MutableLiveData<ResultState>()
+    val authStatus: LiveData<ResultState> get() = _authStatus
 
     fun getDataFromPreference(key: String, value: String) : String{
         val str = sharedPrefManager.getString(key, value)
@@ -53,7 +54,7 @@ class LoginViewModel(private val firestore : FirebaseFirestore, private val shar
         if(isValidCredentials(email, password)){
             loginUser(email, password)
         }else{
-            _authStatus.postValue(AuthState.Failure(getValidationErrorMessage(email, password)))
+            _authStatus.postValue(ResultState.Failure(getValidationErrorMessage(email, password)))
         }
     }
 
@@ -72,23 +73,18 @@ class LoginViewModel(private val firestore : FirebaseFirestore, private val shar
                         setDataToPreference(AppConstant.userPhone, document.getString("phone") ?: "")
                         setDataToPreference(AppConstant.userNest, document.getString("nestId") ?: "")
                     }
-                    _authStatus.postValue(AuthState.Success("Logged in successfully"))
+                    _authStatus.postValue(ResultState.Success("Logged in successfully"))
                 } else {
-                    _authStatus.postValue(AuthState.Failure("Invalid email or password"))
+                    _authStatus.postValue(ResultState.Failure("Invalid email or password"))
                 }
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, exception.message!!)
-                _authStatus.postValue(AuthState.Failure(exception.message?: "Something went wrong"))
+                _authStatus.postValue(ResultState.Failure(exception.message?: "Something went wrong"))
             }
     }
 
     private fun setDataToPreference(key: String, value: String){
         sharedPrefManager.putString(key, value)
     }
-}
-
-sealed class AuthState {
-    data class Success(val successMessage: String) : AuthState()
-    data class Failure(val errorMessage: String) : AuthState()
 }

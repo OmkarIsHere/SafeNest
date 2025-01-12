@@ -6,7 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.safenest.app.ui.authentication.login.LoginFragment
 import com.safenest.app.ui.authentication.signup.SignupFragment
 
-public class AuthPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+class AuthPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {

@@ -43,6 +43,7 @@ firebase = { group = "com.google.firebase", name = "firebase-storage" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebasebom" }
 firebase-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database" }
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 google-map = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "googleMap" }

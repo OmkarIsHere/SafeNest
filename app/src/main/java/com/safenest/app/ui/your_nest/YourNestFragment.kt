@@ -4,23 +4,69 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.safenest.app.databinding.FragmentProfileBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.safenest.app.adapters.MemberAdapter
 import com.safenest.app.databinding.FragmentYourNestBinding
+import com.safenest.app.model.ResultState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class YourNestFragment : Fragment() {
 
     private var _binding: FragmentYourNestBinding? = null
     private val binding get() = _binding!!
+    private val yourNestViewModel: YourNestViewModel by viewModel()
+
+    private lateinit var nestName : TextView
+    private lateinit var nestMembers : RecyclerView
+    private lateinit var loader : ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        yourNestViewModel.getNestData()
         _binding = FragmentYourNestBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(binding){
+            nestName = txtNestName
+            nestMembers = recyclerViewNestMembers
+            loader = progressBar
+        }
+        loader.visibility = View.VISIBLE
+
+        yourNestViewModel.resultState.observe(viewLifecycleOwner) { resultState ->
+            when (resultState) {
+                is ResultState.Success -> {
+                    loader.visibility = View.GONE
+                }
+                is ResultState.Failure -> {
+                    Toast.makeText(context, resultState.errorMessage, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        yourNestViewModel.nest.observe(viewLifecycleOwner) { nest ->
+            if (nest != null) {
+                nestName.text = nest.nestName
+                setMemberList(ArrayList(nest.nestMembers))
+            }
+        }
+
+    }
+
+    private fun setMemberList(members : ArrayList<String>){
+        nestMembers.layoutManager = LinearLayoutManager(context)
+        val recyclerAdapter = MemberAdapter(requireContext(), members)
+        nestMembers.adapter = recyclerAdapter
     }
 }

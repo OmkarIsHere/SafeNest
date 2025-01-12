@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.safenest.app.constant.AppConstant
+import com.safenest.app.model.ResultState
 import com.safenest.app.databinding.FragmentLoginBinding
 import com.safenest.app.ui.MainActivity
 import com.safenest.app.ui.NestActivity
@@ -65,19 +66,19 @@ class LoginFragment : Fragment() {
             loginView = viewLogin
         }
 
-        loginViewModel.authStatus.observe(viewLifecycleOwner) { authState ->
-            when (authState) {
-                is AuthState.Success -> {
+        loginViewModel.authStatus.observe(viewLifecycleOwner) { resultState ->
+            when (resultState) {
+                is ResultState.Success -> {
                     getSharedPrefData()
-                    Toast.makeText(context, authState.successMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, resultState.successMessage, Toast.LENGTH_SHORT).show()
                     redirectToHomeScreen()
                     loader.visibility = View.GONE
                     loginView.visibility = View.VISIBLE
                 }
-                is AuthState.Failure -> {
+                is ResultState.Failure -> {
                     loader.visibility = View.GONE
                     loginView.visibility = View.VISIBLE
-                    Toast.makeText(context, authState.errorMessage, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, resultState.errorMessage, Toast.LENGTH_LONG).show()
                 }
             }
         }
