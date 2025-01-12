@@ -1,13 +1,12 @@
 package com.safenest.app.ui.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.safenest.app.util.SharedPrefManager
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(private val sharedPrefManager: SharedPrefManager) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    fun getDataFromPreference(key: String, value: String) : String{
+        return sharedPrefManager.getString(key, value)
     }
-    val text: LiveData<String> = _text
+
 }

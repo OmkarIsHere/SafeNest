@@ -109,9 +109,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 101) {
-            if (hasPermissions()) {
-                Toast.makeText(requireActivity(), "Permissions granted!", Toast.LENGTH_SHORT).show()
-            } else {
+            if (!hasPermissions()) {
                 Toast.makeText(requireActivity(), "Permissions denied!", Toast.LENGTH_SHORT).show()
             }
         }
