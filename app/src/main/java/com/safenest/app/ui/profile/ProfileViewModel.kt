@@ -10,6 +10,7 @@ import com.google.firebase.database.ValueEventListener
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.Location
 import com.safenest.app.model.Member
+import com.safenest.app.util.Extension
 import com.safenest.app.util.SharedPrefManager
 
 class ProfileViewModel(firebaseDatabase: FirebaseDatabase, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
@@ -23,13 +24,17 @@ class ProfileViewModel(firebaseDatabase: FirebaseDatabase, private val sharedPre
     }
 
     fun setData(){
+        val id = getDataFromPreference(AppConstant.userId, "")
+        val fName = getDataFromPreference(AppConstant.userFirstName, "")
+        val lName = getDataFromPreference(AppConstant.userLastName, "")
+        val name = "$fName $lName"
         val location = Member(
-                userId = "3210",
-                userName = "Test2",
-                userLatLng = "16.545, 6.564",
+                userId = id,
+                userName = name,
+                userLatLng = "16.5435, 06.5641",
                 dateTime = "20 Jan 2025"
             )
-        locationRef.setValue(location)
+        locationRef.child(id).setValue(location)
     }
 
     fun getData(){
@@ -43,5 +48,7 @@ class ProfileViewModel(firebaseDatabase: FirebaseDatabase, private val sharedPre
                 Log.w(TAG, "Failed to read value.", error.toException())
             }
         })
+
+        Log.d(TAG, "password: "+ Extension.hashPassword("849f1575ccfbf3a4d6cf00e6c5641b7fd4da2ed3e212c2d79ba9161a5a432ff0"))
     }
 }

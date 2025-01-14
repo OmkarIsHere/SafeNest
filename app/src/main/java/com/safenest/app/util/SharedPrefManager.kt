@@ -12,7 +12,6 @@ class SharedPrefManager(private val sharedPreferences: SharedPreferences) {
         sharedPreferences.edit().putString(key, value).apply()
     }
 
-
     fun clearPreference(){
         sharedPreferences.edit().clear().apply()
     }
