@@ -24,6 +24,8 @@ import com.safenest.app.constant.AppConstant
 
 class LocationService : Service() {
 
+    private val tag = "LocationService"
+
     private lateinit var notification : Notification
 
     private val locationRequest by lazy {
@@ -35,26 +37,24 @@ class LocationService : Service() {
         object : LocationCallback() {
             override fun onLocationAvailability(p0: LocationAvailability) {
                 super.onLocationAvailability(p0)
-                Log.d("LOCATION_SERVICE", "onLocationAvailability: ${p0.isLocationAvailable}")
             }
 
             override fun onLocationResult(location: LocationResult) {
                 val lat = location.lastLocation?.latitude.toString()
                 val lng = location.lastLocation?.longitude.toString()
-                Log.d("LOCATION_SERVICE", "onLocationResult: $lat, $lng")
                 startServiceOfForeground(lat, lng)
-//
-//                val lastLocation = location.lastLocation
-//                if (lastLocation != null) {
-//                    val lat = lastLocation.latitude.toString()
-//                    val lng = lastLocation.longitude.toString()
-//                    Log.d("LOCATION_SERVICE", "onLocationResult: Latitude = $lat, Longitude = $lng")
-//                    startServiceOfForeground(lat, lng)
-//                } else {
-//                    Log.e("LOCATION_SERVICE", "Location result is null.")
-//                }
+                sendLocationBroadcast(false, lat, lng)
+                Log.d(tag, "onLocationResult: $lat, $lng")
             }
         }
+    }
+
+    private fun sendLocationBroadcast(isError: Boolean, lat: String, lng: String) {
+        val intent = Intent("LOCATION_UPDATE")
+        intent.putExtra("latitude", lat)
+        intent.putExtra("longitude", lng)
+        intent.putExtra("isError", isError)
+        sendBroadcast(intent)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -66,61 +66,50 @@ class LocationService : Service() {
         return START_REDELIVER_INTENT
     }
 
-//    private fun locationUpdates(){
-//        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient( this)
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            return
-//        }
-//        fusedLocationProviderClient.requestLocationUpdates(
-//            locationRequest, locationCallback, null
-//        )
-//    }
-
     private fun locationUpdates() {
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.e("LOCATION_SERVICE", "Location permissions not granted")
+            Log.e(tag, "Location permissions not granted")
             return
         }
 
-        fusedLocationProviderClient.requestLocationUpdates(
-            locationRequest, locationCallback, null
-        ).addOnSuccessListener {
-            Log.d("LOCATION_SERVICE", "Location updates successfully requested.")
-        }
-        .addOnFailureListener { exception ->
-            Log.e("LOCATION_SERVICE", "Failed to request location updates: $exception")
-        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
+            .addOnSuccessListener {
+                Log.d(tag, "Location updates successfully requested.")
+            }
+            .addOnFailureListener { exception ->
+                Log.e(tag, "Failed to request location updates: $exception")
+            }
 
         val settingsClient = LocationServices.getSettingsClient(this)
         val locationSettingsRequest = LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)
             .build()
 
-        // Check if location settings are satisfied
         settingsClient.checkLocationSettings(locationSettingsRequest)
             .addOnSuccessListener {
-                Log.d("LOCATION_SERVICE", "Location settings are satisfied.")
-                // Proceed to request location updates
                 fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
                     .addOnSuccessListener {
-                        Log.d("LOCATION_SERVICE", "Location updates successfully requested.")
+                        Log.d(tag, "Location updates successfully requested.")
                     }
                     .addOnFailureListener { exception ->
-                        Log.e("LOCATION_SERVICE", "Failed to request location updates: $exception")
+                        Log.e(tag, "Failed to request location updates: $exception")
                     }
             }
             .addOnFailureListener { exception ->
-                Log.e("LOCATION_SERVICE", "Location settings are not satisfied: $exception")
+                sendLocationBroadcast(true, "0", "0")
+                Log.e(tag, "Location settings are not satisfied: $exception")
             }
     }
 
     private fun startServiceOfForeground(lat: String, lng: String) {
          notification = NotificationCompat.Builder(this, AppConstant.CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setSmallIcon(R.drawable.icon)
+            .setSound(null)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setVibrate(null)
             .setContentTitle("Location Updates")
             .setContentText("$lat - $lng")
             .build()
@@ -141,6 +130,6 @@ class LocationService : Service() {
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
         stopForeground(true)
-        Log.d("LOCATION_SERVICE", "Service destroyed")
+        Log.d(tag, "Service destroyed")
     }
 }

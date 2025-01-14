@@ -1,26 +1,64 @@
 package com.safenest.app.ui
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.safenest.app.R
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.databinding.ActivityMainBinding
-import com.safenest.app.ui.permission.PermissionViewModel
+import com.safenest.app.service.LocationService
+import com.safenest.app.ui.location.LocationViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var permissionViewModel: PermissionViewModel
+
+    private val locationViewModel: LocationViewModel by viewModel()
+
+    private val locationReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val latitude = intent?.getStringExtra("latitude")
+            val longitude = intent?.getStringExtra("longitude")
+            val isError = intent?.getBooleanExtra("isError", false)
+            if(!isError!!){
+                locationViewModel.updateDatabase(latitude?: "0", longitude?:"0")
+                locationViewModel.setError("")
+            }else{
+                locationViewModel.setError("Enable location service")
+            }
+        }
+    }
+
+    private val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(
+            Manifest.permission.POST_NOTIFICATIONS,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    } else {
+        arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        permissionViewModel = PermissionViewModel(application)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -32,16 +70,50 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-//        permissionViewModel.checkLocationPermission()
-//        permissionViewModel.isPermissionGranted.observe(this) { isGranted ->
-//            if (!isGranted) {
-//                val intent = Intent(this@MainActivity, LocationService::class.java)
-//                startService(intent)
-//            } else {
-//                val temp  = isGranted
-//                // Proceed with app functionality
-//            }
-//        }
+        val filter = IntentFilter("LOCATION_UPDATE")
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(
+                locationReceiver,
+                filter,
+                RECEIVER_NOT_EXPORTED
+            )
+        }else{
+            registerReceiver(locationReceiver, filter)
+        }
+        startService()
+    }
+
+    private fun hasPermissions(): Boolean {
+        return permissions.all {
+            ContextCompat.checkSelfPermission(this, it) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    private fun startService(){
+        if (hasPermissions()) {
+            val intent = Intent(this, LocationService::class.java)
+            this.startService(intent)
+        } else {
+            ActivityCompat.requestPermissions(this, permissions, 101)
+        }
+    }
+
+    private fun stopService(){
+        val intent = Intent(this, LocationService::class.java)
+        this.stopService(intent)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 101) {
+            if (!hasPermissions()) {
+                Toast.makeText(this, "Require permission for best features", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun createNotificationChannel() {
@@ -56,5 +128,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+    override fun onDestroy() {
+        stopService()
+        unregisterReceiver(locationReceiver)
+        super.onDestroy()
+    }
 }

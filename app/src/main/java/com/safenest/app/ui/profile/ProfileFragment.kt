@@ -48,12 +48,5 @@ class ProfileFragment : Fragment() {
         userEmail.text = profileViewModel.getDataFromPreference(AppConstant.userEmail,"")
         userPhone.text = profileViewModel.getDataFromPreference(AppConstant.userPhone,"")
 
-        setData.setOnClickListener {
-            profileViewModel.setData()
-        }
-
-        getData.setOnClickListener {
-            profileViewModel.getData()
-        }
     }
 }
