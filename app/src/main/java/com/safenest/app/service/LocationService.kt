@@ -29,8 +29,8 @@ class LocationService : Service() {
     private lateinit var notification : Notification
 
     private val locationRequest by lazy {
-        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
-            .setIntervalMillis(10000).build()
+        LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, 60000)
+            .setIntervalMillis(60000).build()
     }
 
     private val locationCallback by lazy {
@@ -99,7 +99,7 @@ class LocationService : Service() {
                     }
             }
             .addOnFailureListener { exception ->
-                sendLocationBroadcast(true, "0", "0")
+                sendLocationBroadcast(true, "0.0", "0.0")
                 Log.e(tag, "Location settings are not satisfied: $exception")
             }
     }
@@ -111,7 +111,7 @@ class LocationService : Service() {
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setVibrate(null)
             .setContentTitle("Location Updates")
-            .setContentText("$lat - $lng")
+            .setContentText("$lat, $lng")
             .build()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

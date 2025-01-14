@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.safenest.app.databinding.FragmentLocationBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.safenest.app.R
+import com.safenest.app.databinding.FragmentLocationBinding
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class LocationFragment : Fragment(), OnMapReadyCallback {
 
@@ -45,6 +47,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         map.onCreate(savedInstanceState)
         map.getMapAsync(this)
 
+        locationViewModel.readDatabase()
         locationViewModel.error.observe(viewLifecycleOwner){ value ->
             if(value.isNotEmpty()){
                 error.visibility = View.VISIBLE
@@ -55,8 +58,6 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -64,14 +65,32 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(gMap: GoogleMap) {
         googleMap = gMap
-        val defaultLocation = LatLng(-34.0, 151.0)
-        val location1 = LatLng(-33.91, 151.03)
-        val location2 = LatLng(-34.05, 151.15)
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 10f))
-        googleMap?.addMarker(MarkerOptions().position(defaultLocation).title("Marker in Sydney"))
-        googleMap?.addMarker(MarkerOptions().position(location1).title("Marker in Bankstown"))
-        googleMap?.addMarker(MarkerOptions().position(location2).title("Marker in Cronulla"))
+        var latLng = LatLng(0.0,0.0)
+        var isCameraSet = false
+
+        locationViewModel.members.observe(viewLifecycleOwner){ member ->
+            if(member.isNotEmpty()){
+                for(m in member){
+                    val str = m.userLatLng.split(",")
+                    latLng = LatLng(str.first().toDouble(), str.last().toDouble())
+                    googleMap?.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title(m.userName)
+                            .snippet(m.dateTime)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon))
+                    )
+                }
+                if(!isCameraSet) {
+                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
+                    isCameraSet = true
+                }
+            }else{
+
+            }
+        }
     }
+
 
     override fun onResume() {
         super.onResume()

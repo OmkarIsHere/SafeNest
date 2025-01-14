@@ -71,14 +71,14 @@ class SignupFragment : Fragment() {
 
         signupViewModel.authStatus.observe(viewLifecycleOwner) { authState ->
             when (authState) {
-                is AuthState.Success -> {
+                is AuthStatus.Success -> {
                     Toast.makeText(context, authState.successMessage, Toast.LENGTH_SHORT).show()
                     redirectToNestScreen()
                     signupLayout.visibility = View.VISIBLE
                     otpVerificationLayout.visibility = View.GONE
                     loader.visibility = View.GONE
                 }
-                is AuthState.Failure -> {
+                is AuthStatus.Failure -> {
                     loader.visibility = View.GONE
                     if(authState.isSignup){
                         signupLayout.visibility = View.VISIBLE
@@ -87,7 +87,7 @@ class SignupFragment : Fragment() {
                     }
                     Toast.makeText(context, authState.errorMessage, Toast.LENGTH_LONG).show()
                 }
-                is AuthState.CodeSent -> {
+                is AuthStatus.CodeSent -> {
                     Toast.makeText(context, "Verification code has sent via sms", Toast.LENGTH_SHORT).show()
                     loader.visibility = View.GONE
                     signupLayout.visibility = View.GONE
@@ -107,7 +107,7 @@ class SignupFragment : Fragment() {
                 Extension.trimString(password.text.toString()),
                 Extension.trimString(cnfPassword.text.toString()),
             )
-            phoneNo.text = "+91" + " "+ phone.text.toString()
+            phoneNo.text = "+91 ${phone.text}"
         }
 
         back.setOnClickListener {

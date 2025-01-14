@@ -27,8 +27,8 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
 
     private val _verificationId = MutableLiveData<String>()
 
-    private val _authStatus = MutableLiveData<AuthState>()
-    val authStatus: LiveData<AuthState> get() = _authStatus
+    private val _authStatus = MutableLiveData<AuthStatus>()
+    val authStatus: LiveData<AuthStatus> get() = _authStatus
 
     private fun isValidCredentials(fName: String, lName: String, phone: String, email: String, password: String, cnfPassword: String): Boolean {
         return Extension.isStringNotEmpty(fName) && Extension.isStringNotEmpty(lName) && Extension.isStringNotEmpty(email) && Extension.isStringNotEmpty(phone)
@@ -79,7 +79,7 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
             )
             phoneAuthentication(uPhone)
         }else{
-            _authStatus.postValue(AuthState.Failure(getValidationErrorMessage(fName, lName, phone,email, password, cnfPassword), true ))
+            _authStatus.postValue(AuthStatus.Failure(getValidationErrorMessage(fName, lName, phone,email, password, cnfPassword), true ))
         }
     }
 
@@ -88,7 +88,7 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
             Log.d(TAG, "Verification Completed")
         }
         override fun onVerificationFailed(e: FirebaseException) {
-            _authStatus.postValue(AuthState.Failure(e.message!!, true))
+            _authStatus.postValue(AuthStatus.Failure(e.message!!, true))
             when (e) {
                 is FirebaseAuthInvalidCredentialsException -> {
                     Log.e(TAG, "FirebaseAuthInvalidCredentialsException", e)
@@ -104,7 +104,7 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
             }
         }
         override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-            _authStatus.postValue(AuthState.CodeSent(verificationId))
+            _authStatus.postValue(AuthStatus.CodeSent(verificationId))
             _verificationId.value = verificationId
         }
     }
@@ -133,7 +133,7 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
                     }
                 } else {
                     Log.e(TAG, task.exception?.message!!)
-                    _authStatus.postValue(AuthState.Failure(task.exception?.message ?: "Sign up failed", false))
+                    _authStatus.postValue(AuthStatus.Failure(task.exception?.message ?: "Sign up failed", false))
                 }
             }
     }
@@ -148,11 +148,11 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
                 setDataToPreference(AppConstant.userEmail, user.email ?: "")
                 setDataToPreference(AppConstant.userPhone, user.phone ?: "")
                 setDataToPreference(AppConstant.userNest, user.nestId ?: "")
-                _authStatus.postValue(AuthState.Success("Sign up completed"))
+                _authStatus.postValue(AuthStatus.Success("Sign up completed"))
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, exception.message!!)
-                _authStatus.postValue(AuthState.Failure(exception.message ?: "Sign up failed",false))
+                _authStatus.postValue(AuthStatus.Failure(exception.message ?: "Sign up failed",false))
             }
     }
 
@@ -162,8 +162,8 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
 
 }
 
-sealed class AuthState {
-    data class Success(val successMessage: String) : AuthState()
-    data class Failure(val errorMessage: String, val isSignup: Boolean) : AuthState()
-    data class CodeSent(val verificationId: String) : AuthState()
+sealed class AuthStatus {
+    data class Success(val successMessage: String) : AuthStatus()
+    data class Failure(val errorMessage: String, val isSignup: Boolean) : AuthStatus()
+    data class CodeSent(val verificationId: String) : AuthStatus()
 }

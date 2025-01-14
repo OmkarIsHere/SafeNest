@@ -4,18 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.Nest
-import com.safenest.app.model.User
-import com.safenest.app.ui.authentication.signup.AuthState
 import com.safenest.app.util.Extension
 import com.safenest.app.util.SharedPrefManager
-import kotlin.math.log
 
 class NestViewModel(private val firestore : FirebaseFirestore, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
     private val TAG = "NestViewModel"
