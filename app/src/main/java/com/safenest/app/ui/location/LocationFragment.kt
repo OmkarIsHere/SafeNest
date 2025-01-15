@@ -1,15 +1,20 @@
 package com.safenest.app.ui.location
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -78,17 +83,29 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
                             .position(latLng)
                             .title(m.userName)
                             .snippet(m.dateTime)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon))
+                            .icon(getBitmapDescriptorFromVector(requireContext(), R.drawable.icon))
                     )
                 }
                 if(!isCameraSet) {
                     googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
                     isCameraSet = true
                 }
-            }else{
-
             }
         }
+    }
+
+    private fun getBitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
+        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId) ?: return null
+        vectorDrawable.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        vectorDrawable.draw(canvas)
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+        return BitmapDescriptorFactory.fromBitmap(scaledBitmap)
     }
 
 
