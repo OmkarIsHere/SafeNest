@@ -36,7 +36,7 @@
         android:layout_marginStart="@dimen/size_max_large"
         android:layout_marginEnd="@dimen/size_max_large"
         android:textAlignment="center"
-        android:text="Hi John! You can now join or \ncreate your nest."
+        android:text="Hi There! You can now join or \ncreate your nest."
         app:layout_constraintBottom_toTopOf="@+id/txtDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -87,7 +87,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
                     )
                 }
                 if(!isCameraSet) {
-                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
+                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
                     isCameraSet = true
                 }
             }

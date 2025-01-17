@@ -87,30 +87,6 @@
             app:layout_constraintStart_toStartOf="@+id/txtUserName"
             app:layout_constraintTop_toBottomOf="@+id/txtUserEmail" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnGet"
-            style="@style/Widget.App.Button"
-            android:layout_width="409dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="190dp"
-            android:text="Get Data"
-            android:textAppearance="@style/Medium.Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSet"
-            style="@style/Widget.App.Button"
-            android:layout_width="409dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="17dp"
-            android:text="Set Data"
-            android:textAppearance="@style/Medium.Button"
-            app:layout_constraintBottom_toTopOf="@+id/btnGet"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

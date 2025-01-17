@@ -64,8 +64,11 @@ class JoinNestFragment : Fragment() {
                     activity?.finish()
                 }
                 is NestState.Failure -> {
+                    loader.visibility = View.GONE
+                    joinNestView.visibility = View.VISIBLE
                     Toast.makeText(context, nestState.errorMessage, Toast.LENGTH_LONG).show()
                 }
+
             }
         }
 

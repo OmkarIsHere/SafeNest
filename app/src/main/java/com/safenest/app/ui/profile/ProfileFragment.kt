@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.safenest.app.constant.AppConstant
@@ -21,9 +20,6 @@ class ProfileFragment : Fragment() {
     private lateinit var userEmail : TextView
     private lateinit var userPhone : TextView
 
-    private lateinit var setData : Button
-    private lateinit var getData : Button
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,8 +35,6 @@ class ProfileFragment : Fragment() {
             userName = txtUserName
             userEmail = txtUserEmail
             userPhone = txtUserPhone
-            setData = btnSet
-            getData = btnGet
         }
         val firstName = profileViewModel.getDataFromPreference(AppConstant.userFirstName,"")
         val lastName = profileViewModel.getDataFromPreference(AppConstant.userLastName,"")
