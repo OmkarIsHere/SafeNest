@@ -24,7 +24,6 @@ class LocationViewModel(private val locationManager: LocationManager) : ViewMode
 
     fun updateDatabase(lat: String, lng: String){
         locationManager.setData(lat, lng)
-//        readDatabase()
     }
 
     fun readDatabase(){

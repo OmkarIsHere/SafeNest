@@ -36,15 +36,15 @@
             android:text="John Doe"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/txtUserLocation"
+            app:layout_constraintBottom_toTopOf="@id/txtLastSeen"
             app:layout_constraintStart_toEndOf="@+id/userIcon" />
 
         <TextView
-            android:id="@+id/txtUserLocation"
+            android:id="@+id/txtLastSeen"
             style="@style/Regular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Last Location : nknkn"
+            android:text="Last Seen: "
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txtUserName"

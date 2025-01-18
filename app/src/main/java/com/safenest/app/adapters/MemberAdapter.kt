@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.safenest.app.R
+import com.safenest.app.model.Member
 
 
-class MemberAdapter(private val context: Context, private val members : ArrayList<String>) : RecyclerView.Adapter<MemberAdapter.ViewHolder>() {
+class MemberAdapter(private val context: Context, private val members : ArrayList<Member>) : RecyclerView.Adapter<MemberAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.member_card, parent, false)
@@ -17,7 +18,8 @@ class MemberAdapter(private val context: Context, private val members : ArrayLis
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.memberName.text = members[position]
+        holder.memberName.text = "Name: ${members[position].userName}"
+        holder.lastSeen.text = "Last seen: ${members[position].dateTime}"
     }
 
     override fun getItemCount(): Int {
@@ -26,6 +28,7 @@ class MemberAdapter(private val context: Context, private val members : ArrayLis
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val memberName: TextView = itemView.findViewById(R.id.txtUserName)
+        val lastSeen: TextView = itemView.findViewById(R.id.txtLastSeen)
 
     }
 

@@ -10,9 +10,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.safenest.app.R
 import com.safenest.app.adapters.MemberAdapter
 import com.safenest.app.databinding.FragmentYourNestBinding
+import com.safenest.app.model.Member
 import com.safenest.app.model.ResultState
+import com.safenest.app.ui.location.LocationViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class YourNestFragment : Fragment() {
@@ -20,6 +27,7 @@ class YourNestFragment : Fragment() {
     private var _binding: FragmentYourNestBinding? = null
     private val binding get() = _binding!!
     private val yourNestViewModel: YourNestViewModel by viewModel()
+    private val locationViewModel: LocationViewModel by activityViewModel<LocationViewModel>()
 
     private lateinit var nestName : TextView
     private lateinit var nestMembers : RecyclerView
@@ -58,13 +66,18 @@ class YourNestFragment : Fragment() {
         yourNestViewModel.nest.observe(viewLifecycleOwner) { nest ->
             if (nest != null) {
                 nestName.text = nest.nestName
-                setMemberList(ArrayList(nest.nestMembers))
+            }
+        }
+
+        locationViewModel.members.observe(viewLifecycleOwner){ member ->
+            if(member.isNotEmpty()){
+                setMemberList(ArrayList(member))
             }
         }
 
     }
 
-    private fun setMemberList(members : ArrayList<String>){
+    private fun setMemberList(members : ArrayList<Member>){
         nestMembers.layoutManager = LinearLayoutManager(context)
         val recyclerAdapter = MemberAdapter(requireContext(), members)
         nestMembers.adapter = recyclerAdapter
