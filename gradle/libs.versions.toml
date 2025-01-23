@@ -22,6 +22,11 @@ firebaseAuth = "7.2.0"
 googleServices = "4.4.2"
 playServicesLocation = "21.3.0"
 googleMap = "18.1.0"
+firebaseMessagingKtx = "24.1.0"
+retrofit = "2.9.0"
+retrofitGson = "2.9.0"
+glide = "4.16.0"
+googleAuth = "1.15.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,7 +52,11 @@ firebase-database = { group = "com.google.firebase", name = "firebase-database" 
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 google-map = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "googleMap" }
-
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofitGson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitGson" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+google-auth = { group = "com.google.auth", name = "google-auth-library-oauth2-http", version.ref = "googleAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

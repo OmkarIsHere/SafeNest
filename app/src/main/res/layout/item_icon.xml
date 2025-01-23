@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.imageview.ShapeableImageView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/imgItemIcon"
+android:layout_width="@dimen/size_max_large_upload_photo"
+android:layout_height="@dimen/size_max_large_upload_photo"
+android:clickable="true"
+app:strokeWidth="@dimen/smallest_padding"
+app:shapeAppearanceOverlay="@style/circleImageView"
+android:contentDescription="User Image"
+android:focusable="true"
+android:padding="@dimen/size_small"
+android:src="@drawable/person"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />

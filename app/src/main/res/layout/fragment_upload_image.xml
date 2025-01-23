@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.nest.upload_image.UploadImageFragment">
+
+    <TextView
+        android:id="@+id/txtSkip"
+        style="@style/Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:clickable="true"
+        android:contentDescription="Skip"
+        android:focusable="true"
+        android:text="Skip"
+        android:textColor="@color/primary_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/mapImg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_large_big_padding"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:scaleType="centerCrop"
+        android:clickable="true"
+        android:contentDescription="Map"
+        android:focusable="true"
+        android:padding="@dimen/size_small"
+        android:src="@drawable/map_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSkip" />
+
+    <ImageView
+        android:id="@+id/locationPin"
+        android:layout_width="@dimen/size_large_more_width"
+        android:layout_height="@dimen/size_large_more_width"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:scaleType="centerCrop"
+        android:clickable="true"
+        android:contentDescription="Map"
+        android:focusable="true"
+        android:src="@drawable/location_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/mapImg"
+        app:layout_constraintTop_toBottomOf="@+id/txtSkip" />
+
+    <ImageView
+        android:id="@+id/userIcon"
+        android:layout_width="@dimen/size_large_button"
+        android:layout_height="@dimen/size_large_button"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:scaleType="centerCrop"
+        android:clickable="true"
+        android:contentDescription="User Icon"
+        android:focusable="true"
+        android:padding="@dimen/size_small"
+        android:src="@drawable/person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/mapImg"
+        app:layout_constraintTop_toBottomOf="@+id/txtSkip" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnUploadImage"
+        style="@style/Widget.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_standard"
+        android:layout_marginRight="@dimen/size_standard"
+        android:layout_marginBottom="@dimen/size_standard"
+        android:text="Upload Image"
+        android:textAppearance="@style/Medium.Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

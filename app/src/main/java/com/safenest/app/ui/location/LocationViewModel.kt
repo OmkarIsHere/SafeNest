@@ -4,13 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+//import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.safenest.app.model.Member
+import com.safenest.app.service.NotificationService
 import com.safenest.app.util.LocationManager
+import java.io.FileInputStream
 
-class LocationViewModel(private val locationManager: LocationManager) : ViewModel() {
+class LocationViewModel(private val locationManager: LocationManager, private val notificationService: NotificationService) : ViewModel() {
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
@@ -21,6 +24,21 @@ class LocationViewModel(private val locationManager: LocationManager) : ViewMode
     fun setError(str: String){
         _error.value = str
     }
+
+    fun getToken(){
+        notificationService.getToken()
+        notificationService.subscribeToTopic()
+//        getFirebaseAccessToken()
+    }
+
+//    fun getFirebaseAccessToken(): String {
+//        val serviceAccount = FileInputStream("safenest.json")
+//        val credentials = GoogleCredentials.fromStream(serviceAccount)
+//            .createScoped(listOf("https://www.googleapis.com/auth/cloud-platform"))
+//        credentials.refreshIfExpired()
+//        Log.d("NotificationService", "getFirebaseAccessToken: ${credentials.accessToken.tokenValue}")
+//        return credentials.accessToken.tokenValue
+//    }
 
     fun updateDatabase(lat: String, lng: String){
         locationManager.setData(lat, lng)

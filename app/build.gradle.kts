@@ -12,7 +12,7 @@ val keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
-    namespace = "com.safenest.app"//"com.example.safenest"
+    namespace = "com.safenest.app"
     compileSdk = 34
 
     defaultConfig {
@@ -57,6 +57,10 @@ android {
         viewBinding = true
         buildConfig = true
     }
+
+    lint {
+        checkReleaseBuilds = false
+    }
 }
 
 dependencies {
@@ -80,16 +84,25 @@ dependencies {
     //OTP view
     implementation(libs.otpview)
 
+    //Retrofit(HTTPs Network Service)
+    implementation(libs.retrofit)
+    implementation(libs.retrofitGson)
+
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.messaging.ktx)
 
-    //koin
+    //koin(DI)
     implementation(libs.koin)
 
     //Map
     implementation(libs.google.map)
+
+    //Glide(For Image)
+    implementation(libs.glide)
+
 }

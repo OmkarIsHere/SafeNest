@@ -59,9 +59,10 @@ class JoinNestFragment : Fragment() {
                     loader.visibility = View.GONE
                     joinNestView.visibility = View.VISIBLE
                     nestCode.text!!.clear()
-                    val intent = Intent(requireActivity(), MainActivity::class.java)
-                    startActivity(intent)
-                    activity?.finish()
+//                    val intent = Intent(requireActivity(), MainActivity::class.java)
+//                    startActivity(intent)
+//                    activity?.finish()
+                    findNavController().navigate(R.id.action_joinNestFragment_to_uploadImageFragment)
                 }
                 is NestState.Failure -> {
                     loader.visibility = View.GONE

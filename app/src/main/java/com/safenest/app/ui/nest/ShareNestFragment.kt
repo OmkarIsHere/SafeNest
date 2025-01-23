@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
+import com.safenest.app.R
 import com.safenest.app.databinding.FragmentShareNestBinding
 import com.safenest.app.ui.MainActivity
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -46,9 +48,10 @@ class ShareNestFragment : Fragment() {
         }
 
         skip.setOnClickListener {
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+//            val intent = Intent(requireActivity(), MainActivity::class.java)
+//            startActivity(intent)
+//            requireActivity().finish()
+            findNavController().navigate(R.id.action_shareNestFragment_to_uploadImageFragment)
         }
 
         share.setOnClickListener {

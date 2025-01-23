@@ -22,7 +22,6 @@ import com.safenest.app.R
 import com.safenest.app.databinding.FragmentLocationBinding
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-
 class LocationFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: FragmentLocationBinding? = null
@@ -39,6 +38,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        locationViewModel.readDatabase()
         _binding = FragmentLocationBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -52,7 +52,6 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         map.onCreate(savedInstanceState)
         map.getMapAsync(this)
 
-        locationViewModel.readDatabase()
         locationViewModel.error.observe(viewLifecycleOwner){ value ->
             if(value.isNotEmpty()){
                 error.visibility = View.VISIBLE

@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.safenest.app.constant.AppConstant
+import com.safenest.app.service.NotificationService
 import com.safenest.app.ui.authentication.login.LoginViewModel
 import com.safenest.app.ui.authentication.signup.SignupViewModel
 import com.safenest.app.ui.location.LocationViewModel
@@ -23,17 +25,19 @@ val appModule = module {
     single{ FirebaseAuth.getInstance() }
     single { FirebaseFirestore.getInstance() }
     single { FirebaseDatabase.getInstance() }
+    single { FirebaseMessaging.getInstance() }
 
     single { provideSharedPreferences(androidContext()) }
     single { SharedPrefManager(get()) }
     single { LocationManager(get(), get()) }
+    single { NotificationService(get(), get()) }
 
     viewModel { SignupViewModel(get(), get(), get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { NestViewModel(get(), get()) }
     viewModel { YourNestViewModel(get(), get()) }
     viewModel { ProfileViewModel(get()) }
-    viewModel { LocationViewModel(get()) }
+    viewModel { LocationViewModel(get(), get()) }
 
 }
 

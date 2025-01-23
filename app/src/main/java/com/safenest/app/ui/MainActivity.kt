@@ -9,19 +9,20 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.safenest.app.R
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.databinding.ActivityMainBinding
 import com.safenest.app.service.LocationService
 import com.safenest.app.ui.location.LocationViewModel
+import com.safenest.app.util.KeepStateNavigator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -63,12 +64,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         createNotificationChannel()
-
+        locationViewModel.getToken()
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+//        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+//        navView.setupWithNavController(navController)
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        val keepStateNavigator = KeepStateNavigator(
+            this,
+            supportFragmentManager,
+            R.id.nav_host_fragment_activity_main
+        )
+        navController.navigatorProvider.addNavigator(keepStateNavigator)
+
+        val navGraph = navController.navInflater.inflate(R.navigation.home_navigation)
+        navController.graph = navGraph
 
         navView.setupWithNavController(navController)
+
 
         val filter = IntentFilter("LOCATION_UPDATE")
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

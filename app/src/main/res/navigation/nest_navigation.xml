@@ -33,10 +33,22 @@
         <action
             android:id="@+id/action_joinNestFragment_to_createNestFragment"
             app:destination="@id/createNestFragment" />
+        <action
+            android:id="@+id/action_joinNestFragment_to_uploadImageFragment"
+            app:destination="@id/uploadImageFragment" />
     </fragment>
     <fragment
         android:id="@+id/shareNestFragment"
         android:name="com.safenest.app.ui.nest.ShareNestFragment"
         android:label="fragment_share_nest"
-        tools:layout="@layout/fragment_share_nest" />
+        tools:layout="@layout/fragment_share_nest" >
+        <action
+            android:id="@+id/action_shareNestFragment_to_uploadImageFragment"
+            app:destination="@id/uploadImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/uploadImageFragment"
+        android:name="com.safenest.app.ui.nest.upload_image.UploadImageFragment"
+        android:label="fragment_upload_image"
+        tools:layout="@layout/fragment_upload_image" />
 </navigation>

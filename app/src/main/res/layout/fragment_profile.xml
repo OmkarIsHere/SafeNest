@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintBottom_toTopOf="@+id/userInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,22 +30,22 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/userInfo"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_medium"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBar">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/userIcon"
             android:layout_width="@dimen/size_max_large_upload_photo"
             android:layout_height="@dimen/size_max_large_upload_photo"
             android:layout_marginStart="@dimen/size_large"
             android:clickable="true"
+            app:strokeWidth="@dimen/smallest_padding"
+            app:shapeAppearanceOverlay="@style/circleImageView"
             android:contentDescription="User Image"
             android:focusable="true"
             android:padding="@dimen/size_small"
@@ -90,4 +90,69 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+    <ImageView
+        android:id="@+id/mapImg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_large_big_padding"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:scaleType="centerCrop"
+        android:clickable="true"
+        android:contentDescription="Map"
+        android:focusable="true"
+        android:padding="@dimen/size_small"
+        android:src="@drawable/map_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userInfo" />
+
+    <ImageView
+        android:id="@+id/locationPin"
+        android:layout_width="@dimen/size_large_more_width"
+        android:layout_height="@dimen/size_large_more_width"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:scaleType="centerCrop"
+        android:clickable="true"
+        android:contentDescription="Map"
+        android:focusable="true"
+        android:src="@drawable/location_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/mapImg"
+        app:layout_constraintTop_toBottomOf="@+id/userInfo" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/userIc"
+        android:layout_width="@dimen/size_large_button"
+        android:layout_height="@dimen/size_large_button"
+        android:layout_marginStart="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        android:scaleType="centerCrop"
+        android:clickable="true"
+        app:strokeWidth="@dimen/smallest_padding"
+        app:shapeAppearanceOverlay="@style/circleImageView"
+        android:contentDescription="User Icon"
+        android:focusable="true"
+        android:padding="@dimen/size_small"
+        android:src="@drawable/person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/mapImg"
+        app:layout_constraintTop_toBottomOf="@+id/userInfo" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnUploadImage"
+        style="@style/Widget.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="156dp"
+        android:text="Upload Image"
+        android:textAppearance="@style/Medium.Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
