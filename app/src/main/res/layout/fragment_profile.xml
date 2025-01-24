@@ -27,6 +27,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/icLogout"
+            android:layout_width="@dimen/size_extra_large"
+            android:layout_height="@dimen/size_extra_large"
+            android:layout_marginEnd="@dimen/size_medium"
+            android:contentDescription="Logout"
+            android:padding="@dimen/small_padding"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/topBar">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/userIcon"
+            android:id="@+id/iconUser"
             android:layout_width="@dimen/size_max_large_upload_photo"
             android:layout_height="@dimen/size_max_large_upload_photo"
             android:layout_marginStart="@dimen/size_large"
@@ -62,8 +74,8 @@
             android:layout_marginTop="@dimen/size_small"
             android:text=""
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/userIcon"
-            app:layout_constraintTop_toTopOf="@id/userIcon" />
+            app:layout_constraintStart_toEndOf="@+id/iconUser"
+            app:layout_constraintTop_toTopOf="@id/iconUser" />
 
         <TextView
             android:id="@+id/txtUserEmail"
@@ -86,7 +98,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txtUserName"
             app:layout_constraintTop_toBottomOf="@+id/txtUserEmail" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

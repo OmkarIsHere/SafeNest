@@ -31,8 +31,6 @@
         <TextView
             android:id="@+id/txtSafeNest"
             style="@style/LogoStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:text="SafeNest"
             app:layout_constraintBottom_toBottomOf="@+id/imgIcon"
             app:layout_constraintStart_toEndOf="@+id/imgIcon"

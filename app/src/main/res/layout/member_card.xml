@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/userIcon"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgUserIcon"
             android:layout_width="@dimen/size_large_button"
             android:layout_height="@dimen/size_large_button"
             android:layout_marginStart="@dimen/size_large"
             android:contentDescription="User Image"
-            android:clickable="true"
-            android:focusable="true"
+            app:strokeWidth="@dimen/smallest_padding"
+            app:shapeAppearanceOverlay="@style/circleImageView"
             android:padding="@dimen/size_small"
             android:src="@drawable/person"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/txtLastSeen"
-            app:layout_constraintStart_toEndOf="@+id/userIcon" />
+            app:layout_constraintStart_toEndOf="@+id/imgUserIcon" />
 
         <TextView
             android:id="@+id/txtLastSeen"

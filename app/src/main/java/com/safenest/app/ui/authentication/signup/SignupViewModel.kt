@@ -75,6 +75,7 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
                 lastName = lName,
                 email = email,
                 phone = uPhone,
+                userIcon = "",
                 password = Extension.hashPassword(password)
             )
             phoneAuthentication(uPhone)

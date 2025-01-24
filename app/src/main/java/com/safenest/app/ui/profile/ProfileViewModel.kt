@@ -9,4 +9,7 @@ class ProfileViewModel(private val sharedPrefManager: SharedPrefManager) : ViewM
         return sharedPrefManager.getString(key, value)
     }
 
+    fun logout(){
+        sharedPrefManager.clearPreference()
+    }
 }

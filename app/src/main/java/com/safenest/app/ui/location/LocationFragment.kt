@@ -2,7 +2,14 @@ package com.safenest.app.ui.location
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.BitmapShader
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Shader
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.safenest.app.R
 import com.safenest.app.databinding.FragmentLocationBinding
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
+
 
 class LocationFragment : Fragment(), OnMapReadyCallback {
 
@@ -106,7 +114,6 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
         return BitmapDescriptorFactory.fromBitmap(scaledBitmap)
     }
-
 
     override fun onResume() {
         super.onResume()

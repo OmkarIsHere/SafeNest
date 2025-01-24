@@ -69,6 +69,7 @@ class LoginViewModel(private val firestore : FirebaseFirestore, private val shar
                         setDataToPreference(AppConstant.userEmail, document.getString("email") ?: "")
                         setDataToPreference(AppConstant.userPhone, document.getString("phone") ?: "")
                         setDataToPreference(AppConstant.userNest, document.getString("nestId") ?: "")
+                        setDataToPreference(AppConstant.userIcon, document.getString("userIcon") ?: "")
                     }
                     _authStatus.postValue(ResultState.Success("Logged in successfully"))
                 } else {

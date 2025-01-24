@@ -20,7 +20,7 @@ class KeepStateNavigator(
         args: Bundle?,
         navOptions: NavOptions?,
         navigatorExtras: Extras?
-    ): NavDestination? {
+    ): NavDestination {
         val tag = destination.id.toString()
         var fragment = fragmentManager.findFragmentByTag(tag)
 
