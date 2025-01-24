@@ -8,6 +8,16 @@
     tools:context=".ui.nest.upload_image.UploadImageFragment">
 
     <TextView
+        android:id="@+id/txtSelectProfile"
+        style="@style/Subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_large"
+        android:text="Select Profile Icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/txtSkip"
         style="@style/Medium"
         android:layout_width="wrap_content"
@@ -37,7 +47,7 @@
         android:src="@drawable/map_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSkip" />
+        app:layout_constraintTop_toBottomOf="@+id/txtSelectProfile" />
 
     <ImageView
         android:id="@+id/locationPin"
@@ -54,9 +64,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/mapImg"
-        app:layout_constraintTop_toBottomOf="@+id/txtSkip" />
+        app:layout_constraintTop_toBottomOf="@+id/txtSelectProfile" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/userIcon"
         android:layout_width="@dimen/size_large_button"
         android:layout_height="@dimen/size_large_button"
@@ -64,6 +74,9 @@
         android:layout_marginEnd="@dimen/size_large"
         android:scaleType="centerCrop"
         android:clickable="true"
+        app:strokeWidth="@dimen/smallest_padding"
+        android:visibility="gone"
+        app:shapeAppearanceOverlay="@style/circleImageView"
         android:contentDescription="User Icon"
         android:focusable="true"
         android:padding="@dimen/size_small"
@@ -71,19 +84,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/mapImg"
-        app:layout_constraintTop_toBottomOf="@+id/txtSkip" />
+        app:layout_constraintTop_toBottomOf="@+id/txtSelectProfile" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnUploadImage"
-        style="@style/Widget.App.Button"
+    <LinearLayout
+        android:id="@+id/uploadImgSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_standard"
-        android:layout_marginRight="@dimen/size_standard"
-        android:layout_marginBottom="@dimen/size_standard"
-        android:text="Upload Image"
-        android:textAppearance="@style/Medium.Button"
+        android:orientation="vertical"
+        android:layout_margin="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUploadImage"
+            style="@style/Widget.App.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:text="Upload Image"
+            android:textAppearance="@style/Medium.Button"
+            />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/primary_blue" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

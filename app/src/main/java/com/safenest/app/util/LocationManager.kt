@@ -15,6 +15,7 @@ class LocationManager(firebaseDatabase: FirebaseDatabase, private val sharedPref
     private val id = getDataFromPreference(AppConstant.userId)
     private val fName = getDataFromPreference(AppConstant.userFirstName)
     private val lName = getDataFromPreference(AppConstant.userLastName)
+    private val icon = getDataFromPreference(AppConstant.userIcon)
     private val nestId = getDataFromPreference(AppConstant.userNest)
 
     private val locationRef = dbReference
@@ -34,10 +35,18 @@ class LocationManager(firebaseDatabase: FirebaseDatabase, private val sharedPref
         val member = Member(
             userId = id,
             userName = name,
+            userIcon = icon,
             userLatLng = "$lat, $lng",
             dateTime = formattedDate
         )
         locationRef.child(id).setValue(member)
+    }
+
+    fun updateUserIcon(imgUrl : String){
+        val updates = mapOf(
+            "userIcon" to imgUrl
+        )
+        locationRef.child(id).updateChildren(updates)
     }
 
     fun getData(): DatabaseReference{

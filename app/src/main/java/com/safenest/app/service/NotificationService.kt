@@ -7,11 +7,15 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.util.SharedPrefManager
+import org.koin.android.ext.android.inject
 
-class NotificationService(private val firebaseMessaging: FirebaseMessaging, private val sharedPrefManager: SharedPrefManager) : FirebaseMessagingService() {
+class NotificationService() : FirebaseMessagingService() {
+
     private val TAG = "NotificationService"
+//    private val nestId = getNestIdFromSf()
 
-    private val nestId = getNestIdFromSf()
+    private val sharedPrefManager: SharedPrefManager by inject()
+    private val firebaseMessaging: FirebaseMessaging by inject()
 
     private fun getNestIdFromSf() : String{
         return sharedPrefManager.getString(AppConstant.userNest, "")
@@ -29,7 +33,7 @@ class NotificationService(private val firebaseMessaging: FirebaseMessaging, priv
         })
     }
 
-    fun subscribeToTopic(){
+    fun subscribeToTopic(nestId : String){
         firebaseMessaging.subscribeToTopic(nestId)
             .addOnCompleteListener { task ->
                 var msg = "Subscribed"
@@ -40,7 +44,7 @@ class NotificationService(private val firebaseMessaging: FirebaseMessaging, priv
             }
     }
 
-    fun unSubscribeToTopic(){
+    fun unSubscribeToTopic(nestId : String){
         firebaseMessaging.unsubscribeFromTopic(nestId)
             .addOnCompleteListener { task ->
                 var msg = "Unsubscribed"

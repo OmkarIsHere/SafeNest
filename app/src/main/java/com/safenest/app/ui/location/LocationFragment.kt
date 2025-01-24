@@ -75,7 +75,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         locationViewModel.members.observe(viewLifecycleOwner){ member ->
             if(member.isNotEmpty()){
                 for(m in member){
-                    val str = m.userLatLng.split(",")
+                    val str = m.userLatLng!!.split(",")
                     latLng = LatLng(str.first().toDouble(), str.last().toDouble())
                     googleMap?.addMarker(
                         MarkerOptions()

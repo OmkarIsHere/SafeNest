@@ -12,6 +12,7 @@ import com.safenest.app.ui.authentication.login.LoginViewModel
 import com.safenest.app.ui.authentication.signup.SignupViewModel
 import com.safenest.app.ui.location.LocationViewModel
 import com.safenest.app.ui.nest.NestViewModel
+import com.safenest.app.ui.nest.upload_image.UploadImageViewModel
 import com.safenest.app.ui.profile.ProfileViewModel
 import com.safenest.app.ui.your_nest.YourNestViewModel
 import com.safenest.app.util.LocationManager
@@ -30,12 +31,13 @@ val appModule = module {
     single { provideSharedPreferences(androidContext()) }
     single { SharedPrefManager(get()) }
     single { LocationManager(get(), get()) }
-    single { NotificationService(get(), get()) }
+    single { NotificationService() }
 
     viewModel { SignupViewModel(get(), get(), get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { NestViewModel(get(), get()) }
     viewModel { YourNestViewModel(get(), get()) }
+    viewModel { UploadImageViewModel(get(), get(), get()) }
     viewModel { ProfileViewModel(get()) }
     viewModel { LocationViewModel(get(), get()) }
 

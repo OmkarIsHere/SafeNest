@@ -17,9 +17,6 @@ class LoginViewModel(private val firestore : FirebaseFirestore, private val shar
     private val _userId = MutableLiveData<String>()
     val userId: LiveData<String> get() = _userId
 
-//    private val _nestId = MutableLiveData<String>()
-//    val nestId: LiveData<String> get() = _nestId
-
     private val _authStatus = MutableLiveData<ResultState>()
     val authStatus: LiveData<ResultState> get() = _authStatus
 

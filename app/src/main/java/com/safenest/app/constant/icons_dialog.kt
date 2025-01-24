@@ -3,6 +3,7 @@ package com.safenest.app.constant
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.widget.GridView
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,7 @@ class IconsDialog(private val context: Context) {
         images.add(AppConstant.W4)
 
         val imageGrid: RecyclerView = view.findViewById(R.id.image_grid)
-        imageGrid.layoutManager = GridLayoutManager(context, 3) // 3 columns
+        imageGrid.layoutManager = GridLayoutManager(context, 4)
         imageGrid.adapter = IconsAdapter(context, images) { image ->
             onImageClick(image)
         }

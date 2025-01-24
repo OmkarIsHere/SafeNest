@@ -1,8 +1,9 @@
 package com.safenest.app.model
 
 data class Member(
-    val userId : String,
-    val userName : String,
-    val userLatLng : String,
-    val dateTime : String
+    var userId : String? = "",
+    var userName : String? = "",
+    var userLatLng : String? = "",
+    var userIcon : String? = "",
+    var dateTime : String? = ""
 )

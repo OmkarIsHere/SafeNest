@@ -27,7 +27,7 @@ class LocationViewModel(private val locationManager: LocationManager, private va
 
     fun getToken(){
         notificationService.getToken()
-        notificationService.subscribeToTopic()
+//        notificationService.subscribeToTopic()
 //        getFirebaseAccessToken()
     }
 
@@ -56,7 +56,8 @@ class LocationViewModel(private val locationManager: LocationManager, private va
                         userId = data.key ?: "",
                         userName = map["userName"] as? String ?: "",
                         userLatLng = map["userLatLng"] as? String ?: "",
-                        dateTime = map["dateTime"] as? String ?: ""
+                        dateTime = map["dateTime"] as? String ?: "",
+                        userIcon = map["userIcon"] as? String ?: ""
                     )
                     locations.add(userLocation)
                 }

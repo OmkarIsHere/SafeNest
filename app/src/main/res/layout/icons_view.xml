@@ -10,14 +10,14 @@
         style="@style/Medium.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/size_medium"
+        android:layout_margin="@dimen/size_medium"
         android:text="Select profile icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <GridView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/image_grid"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_medium"
         android:horizontalSpacing="@dimen/size_little_large_small"

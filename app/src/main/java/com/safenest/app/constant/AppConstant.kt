@@ -13,6 +13,7 @@ object AppConstant {
     const val userId = "USERID"
     const val userFirstName = "USERFIRSTNAME"
     const val userLastName = "USERLASTNAME"
+    const val userIcon = "USERICON"
     const val userEmail = "USEREMAIL"
     const val userPhone = "USERPHONE"
     const val userNest = "USERNEST"
