@@ -2,21 +2,19 @@ package com.safenest.app.ui.location
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.BitmapShader
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Shader
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -26,6 +24,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.safenest.app.R
+import com.safenest.app.R.*
 import com.safenest.app.databinding.FragmentLocationBinding
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -85,13 +84,25 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
                 for(m in member){
                     val str = m.userLatLng!!.split(",")
                     latLng = LatLng(str.first().toDouble(), str.last().toDouble())
-                    googleMap?.addMarker(
+
+/*                    googleMap?.addMarker(
                         MarkerOptions()
                             .position(latLng)
                             .title(m.userName)
                             .snippet(m.dateTime)
-                            .icon(getBitmapDescriptorFromVector(requireContext(), R.drawable.icon))
+                            .icon(getBitmapDescriptorFromVector(requireContext(), drawable.icon))
                     )
+ */
+
+                    customMarker(requireContext(), m.userIcon!!) { bitmapDescriptor ->
+                        googleMap?.addMarker(
+                            MarkerOptions()
+                                .position(latLng)
+                                .title(m.userName)
+                                .snippet(m.dateTime)
+                                .icon(bitmapDescriptor)
+                        )
+                    }
                 }
                 if(!isCameraSet) {
                     googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
@@ -113,6 +124,49 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         vectorDrawable.draw(canvas)
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
         return BitmapDescriptorFactory.fromBitmap(scaledBitmap)
+    }
+
+    private fun customMarker(
+        context: Context,
+        imageUrl: String,
+        callback: (BitmapDescriptor) -> Unit
+    ) {
+        val markerView = LayoutInflater.from(context).inflate(R.layout.custom_marker, null)
+        val profileImageView = markerView.findViewById<ImageView>(R.id.imgPinIcon)
+
+        Glide.with(context)
+            .asBitmap()
+            .load(imageUrl)
+            .placeholder(R.drawable.location_pin) // Placeholder
+            .error(R.drawable.ic_location_24) // Error drawable
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                ) {
+                    profileImageView.setImageBitmap(resource)
+
+                    markerView.measure(
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    )
+                    markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)
+
+                    val bitmap = Bitmap.createBitmap(
+                        markerView.measuredWidth,
+                        markerView.measuredHeight,
+                        Bitmap.Config.ARGB_8888
+                    )
+                    val canvas = Canvas(bitmap)
+                    markerView.draw(canvas)
+
+                    callback(BitmapDescriptorFactory.fromBitmap(bitmap))
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    // Handle cleanup if needed
+                }
+            })
     }
 
     override fun onResume() {
