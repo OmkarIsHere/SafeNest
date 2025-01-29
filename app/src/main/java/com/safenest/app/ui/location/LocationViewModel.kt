@@ -1,5 +1,6 @@
 package com.safenest.app.ui.location
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,12 +9,15 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.Member
 import com.safenest.app.service.NotificationService
 import com.safenest.app.util.LocationManager
+import com.safenest.app.util.Miscellaneous
+import com.safenest.app.util.SharedPrefManager
 import java.io.FileInputStream
 
-class LocationViewModel(private val locationManager: LocationManager, private val notificationService: NotificationService) : ViewModel() {
+class LocationViewModel(private val locationManager: LocationManager, private val sharedPrefManager: SharedPrefManager, private val notificationService: NotificationService) : ViewModel() {
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
@@ -26,7 +30,7 @@ class LocationViewModel(private val locationManager: LocationManager, private va
     }
 
     fun getToken(){
-        notificationService.getToken()
+//        notificationService.getToken()
 //        notificationService.subscribeToTopic()
 //        getFirebaseAccessToken()
     }
@@ -40,15 +44,16 @@ class LocationViewModel(private val locationManager: LocationManager, private va
 //        return credentials.accessToken.tokenValue
 //    }
 
-    fun updateDatabase(lat: String, lng: String){
-        locationManager.setData(lat, lng)
+    fun updateDatabase(context: Context, lat: String, lng: String){
+        val battery = Miscellaneous(context).getBatteryPercentage()
+        locationManager.setData(lat, lng, battery)
     }
 
     fun readDatabase(){
-       val locationRef = locationManager.getData()
+        val locationRef = locationManager.getData()
+        val userId = sharedPrefManager.getString(AppConstant.userId, "")
         locationRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.value
                 val locations = mutableListOf<Member>()
                 for (data in dataSnapshot.children) {
                     val map = data.value as? Map<*, *> ?: continue
@@ -57,12 +62,16 @@ class LocationViewModel(private val locationManager: LocationManager, private va
                         userName = map["userName"] as? String ?: "",
                         userLatLng = map["userLatLng"] as? String ?: "",
                         dateTime = map["dateTime"] as? String ?: "",
+                        battery = map["battery"] as? String ?: "",
+                        userPhone = map["userPhone"] as? String ?: "",
+                        internet = map["internet"] as? String ?: "",
                         userIcon = map["userIcon"] as? String ?: ""
                     )
-                    locations.add(userLocation)
+                    if(userId != data.key){
+                        locations.add(userLocation)
+                    }
                 }
                 _members.value = locations
-                Log.d("LocationService", "Value is: $value")
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -70,4 +79,6 @@ class LocationViewModel(private val locationManager: LocationManager, private va
             }
         })
     }
+
+
 }

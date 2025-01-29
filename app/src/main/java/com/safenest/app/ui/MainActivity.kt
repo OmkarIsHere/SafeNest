@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             val longitude = intent?.getStringExtra("longitude")
             val isError = intent?.getBooleanExtra("isError", false)
             if(!isError!!){
-                locationViewModel.updateDatabase(latitude?: "0", longitude?:"0")
+                locationViewModel.updateDatabase(context!!,latitude?: "0", longitude?:"0")
                 locationViewModel.setError("")
             }else{
                 locationViewModel.setError("Enable location service")

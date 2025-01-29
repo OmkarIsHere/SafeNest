@@ -39,7 +39,7 @@ val appModule = module {
     viewModel { YourNestViewModel(get(), get()) }
     viewModel { UploadImageViewModel(get(), get(), get()) }
     viewModel { ProfileViewModel(get()) }
-    viewModel { LocationViewModel(get(), get()) }
+    viewModel { LocationViewModel(get(), get(), get()) }
 
 }
 

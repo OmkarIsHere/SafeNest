@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_width="@dimen/size_max_large"
+        android:layout_height="@dimen/size_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/size_medium"
+        android:background="@drawable/bg_light_grey"/>
+
+    <TextView
+        android:id="@+id/txtDateTime"
+        style="@style/Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAlignment="center"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginEnd="@dimen/size_large"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/memberIcon"
+        android:layout_width="@dimen/size_large_margin"
+        android:layout_height="@dimen/size_large_margin"
+        android:contentDescription="User Image"
+        android:src="@drawable/person"
+        android:layout_marginTop="@dimen/size_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtDateTime"
+        app:shapeAppearanceOverlay="@style/circleImageView"
+        app:strokeWidth="@dimen/smallest_padding" />
+
+    <TextView
+        android:id="@+id/txtMemberName"
+        style="@style/Medium.Bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_medium"
+        android:text=""
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memberIcon" />
+
+    <TextView
+        android:id="@+id/txtMemberPhone"
+        style="@style/Regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginBottom="@dimen/size_medium"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMemberName" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/locationView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/batteryView"
+        app:layout_constraintTop_toBottomOf="@id/txtMemberPhone">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/memberLocation"
+            android:layout_width="@dimen/size_max_large"
+            android:layout_height="@dimen/size_max_large"
+            android:contentDescription="Location"
+            android:background="@drawable/bg_circle"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_location_24"
+            android:layout_margin="@dimen/size_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circleImageView" />
+
+        <TextView
+            android:id="@+id/txtMemberLocation"
+            style="@style/Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:textAlignment="center"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memberLocation" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/batteryView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/locationView"
+        app:layout_constraintEnd_toStartOf="@id/networkView"
+        app:layout_constraintTop_toBottomOf="@id/txtMemberPhone">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/memberBattery"
+            android:layout_width="@dimen/size_max_large"
+            android:layout_height="@dimen/size_max_large"
+            android:contentDescription="Battery"
+            android:background="@drawable/bg_circle"
+            android:src="@drawable/ic_battery_24"
+            android:scaleType="centerInside"
+            android:layout_margin="@dimen/size_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circleImageView" />
+
+        <TextView
+            android:id="@+id/txtMemberBattery"
+            style="@style/Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:textAlignment="center"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memberBattery" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/networkView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/batteryView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtMemberPhone">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/memberNetwork"
+            android:layout_width="@dimen/size_max_large"
+            android:layout_height="@dimen/size_max_large"
+            android:contentDescription="Network"
+            android:background="@drawable/bg_circle"
+            android:src="@drawable/ic_network_24"
+            android:scaleType="centerInside"
+            android:layout_margin="@dimen/size_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/circleImageView" />
+
+        <TextView
+            android:id="@+id/txtMemberNetwork"
+            style="@style/Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:textAlignment="center"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memberNetwork" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/callView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_medium"
+        app:layout_constraintTop_toBottomOf="@+id/locationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/messageView"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/bg_rectangle">
+
+        <ImageView
+            android:id="@+id/phoneIcon"
+            android:layout_width="@dimen/size_little_max_large"
+            android:layout_height="@dimen/size_little_max_large"
+            android:contentDescription="Message"
+            android:src="@drawable/ic_phone_24"
+            android:layout_margin="@dimen/size_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/txtCall"
+            style="@style/Regular.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_medium"
+            android:textAlignment="center"
+            android:text="Call"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phoneIcon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/messageView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_medium"
+        app:layout_constraintStart_toEndOf="@id/callView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/callView"
+        app:layout_constraintBottom_toBottomOf="@+id/callView"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/bg_rectangle">
+
+        <ImageView
+            android:id="@+id/messageIcon"
+            android:layout_width="@dimen/size_little_max_large"
+            android:layout_height="@dimen/size_little_max_large"
+            android:contentDescription="Message"
+            android:src="@drawable/ic_message_24"
+            android:layout_margin="@dimen/size_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/txtMessage"
+            style="@style/Regular.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_medium"
+            android:textAlignment="center"
+            android:text="Message"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/messageIcon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

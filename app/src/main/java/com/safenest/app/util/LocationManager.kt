@@ -1,5 +1,6 @@
 package com.safenest.app.util
 
+import android.util.Log
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.safenest.app.constant.AppConstant
@@ -15,6 +16,7 @@ class LocationManager(firebaseDatabase: FirebaseDatabase, private val sharedPref
     private val id = getDataFromPreference(AppConstant.userId)
     private val fName = getDataFromPreference(AppConstant.userFirstName)
     private val lName = getDataFromPreference(AppConstant.userLastName)
+    private val phone = getDataFromPreference(AppConstant.userPhone)
     private val icon = getDataFromPreference(AppConstant.userIcon)
     private val nestId = getDataFromPreference(AppConstant.userNest)
 
@@ -26,7 +28,7 @@ class LocationManager(firebaseDatabase: FirebaseDatabase, private val sharedPref
         return sharedPrefManager.getString(key, "")
     }
 
-    fun setData(lat: String, lng : String){
+    fun setData(lat: String, lng : String, battery: String){
         val currentDate = Date()
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val formattedDate = formatter.format(currentDate)
@@ -35,10 +37,13 @@ class LocationManager(firebaseDatabase: FirebaseDatabase, private val sharedPref
         val member = Member(
             userId = id,
             userName = name,
+            userPhone = phone,
+            battery = battery,
             userIcon = icon,
             userLatLng = "$lat, $lng",
             dateTime = formattedDate
         )
+        Log.d("GoogleMap", "setData: $member")
         locationRef.child(id).setValue(member)
     }
 

@@ -5,9 +5,6 @@ import java.security.MessageDigest
 class Extension {
 
     companion object{
-        fun removeDecimalFromString(input: String): String {
-            return input.substringBefore('.')
-        }
 
         fun trimString(str: String): String {
             return str.trim()

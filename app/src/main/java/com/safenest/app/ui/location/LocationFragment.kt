@@ -1,16 +1,21 @@
 package com.safenest.app.ui.location
 
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.os.BatteryManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -22,10 +27,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.safenest.app.R
 import com.safenest.app.R.*
 import com.safenest.app.databinding.FragmentLocationBinding
+import com.safenest.app.model.Member
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 
@@ -38,7 +46,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var error : TextView
     private lateinit var map : MapView
-    private var googleMap: GoogleMap? = null
+    private lateinit var googleMap: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +75,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
                 error.visibility = View.GONE
             }
         }
+
     }
 
     override fun onDestroyView() {
@@ -78,9 +87,11 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         googleMap = gMap
         var latLng = LatLng(0.0,0.0)
         var isCameraSet = false
+        val markerMap = HashMap<Marker, Member>()
 
         locationViewModel.members.observe(viewLifecycleOwner){ member ->
             if(member.isNotEmpty()){
+                markerMap.clear()
                 for(m in member){
                     val str = m.userLatLng!!.split(",")
                     latLng = LatLng(str.first().toDouble(), str.last().toDouble())
@@ -95,20 +106,32 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
  */
 
                     customMarker(requireContext(), m.userIcon!!) { bitmapDescriptor ->
-                        googleMap?.addMarker(
+                        val marker = googleMap.addMarker(
                             MarkerOptions()
                                 .position(latLng)
-                                .title(m.userName)
-                                .snippet(m.dateTime)
                                 .icon(bitmapDescriptor)
                         )
+
+                        marker?.let {
+                            markerMap[it] = m
+                        }
                     }
                 }
                 if(!isCameraSet) {
-                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
                     isCameraSet = true
                 }
             }
+        }
+
+        googleMap.setOnMarkerClickListener { marker ->
+            markerMap[marker]?.let { member ->
+                showBottomSheetDialog(requireContext(), member)
+                Log.w("GoogleMap", "markerMap: $markerMap")
+                Log.w("GoogleMap", "marker: $marker")
+                Log.w("GoogleMap", "member: $member")
+            }
+            true
         }
     }
 
@@ -131,14 +154,14 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         imageUrl: String,
         callback: (BitmapDescriptor) -> Unit
     ) {
-        val markerView = LayoutInflater.from(context).inflate(R.layout.custom_marker, null)
+        val markerView = LayoutInflater.from(context).inflate(layout.custom_marker, null)
         val profileImageView = markerView.findViewById<ImageView>(R.id.imgPinIcon)
 
         Glide.with(context)
             .asBitmap()
             .load(imageUrl)
-            .placeholder(R.drawable.location_pin) // Placeholder
-            .error(R.drawable.ic_location_24) // Error drawable
+            .placeholder(drawable.location_pin)
+            .error(drawable.ic_location_24)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(
                     resource: Bitmap,
@@ -163,10 +186,37 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
                     callback(BitmapDescriptorFactory.fromBitmap(bitmap))
                 }
 
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    // Handle cleanup if needed
-                }
+                override fun onLoadCleared(placeholder: Drawable?) {}
             })
+    }
+
+    private fun showBottomSheetDialog(context: Context, member:Member) {
+        val dialog = BottomSheetDialog(context)
+        val view = layoutInflater.inflate(layout.user_info_dialog, null)
+
+        val mImg = view.findViewById<ImageView>(R.id.memberIcon)
+        val mName = view.findViewById<TextView>(R.id.txtMemberName)
+        val mPhone = view.findViewById<TextView>(R.id.txtMemberPhone)
+        val dateTime = view.findViewById<TextView>(R.id.txtDateTime)
+        val location = view.findViewById<TextView>(R.id.txtMemberLocation)
+        val battery = view.findViewById<TextView>(R.id.txtMemberBattery)
+        val network = view.findViewById<TextView>(R.id.txtMemberNetwork)
+        val call = view.findViewById<ConstraintLayout>(R.id.callView)
+        val message = view.findViewById<ConstraintLayout>(R.id.messageView)
+
+        Glide.with(context).load(member.userIcon).into(mImg)
+        mName.text = member.userName
+        mPhone.text = member.userPhone
+        dateTime.text = member.dateTime
+        location.text = member.userLatLng
+        battery.text = "${member.battery}%"
+        network.text = member.internet
+
+        call.setOnClickListener {  }
+        message.setOnClickListener {  }
+
+        dialog.setContentView(view)
+        dialog.show()
     }
 
     override fun onResume() {
