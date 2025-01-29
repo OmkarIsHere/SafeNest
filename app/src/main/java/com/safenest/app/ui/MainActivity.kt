@@ -23,6 +23,7 @@ import com.safenest.app.databinding.ActivityMainBinding
 import com.safenest.app.service.LocationService
 import com.safenest.app.ui.location.LocationViewModel
 import com.safenest.app.util.KeepStateNavigator
+import com.safenest.app.util.NetworkUtils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 locationViewModel.updateDatabase(context!!,latitude?: "0", longitude?:"0")
                 locationViewModel.setError("")
             }else{
-                locationViewModel.setError("Enable location service")
+                locationViewModel.setError("Please Enable Location Service")
             }
         }
     }
@@ -86,7 +87,6 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-
         val filter = IntentFilter("LOCATION_UPDATE")
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(
@@ -96,6 +96,15 @@ class MainActivity : AppCompatActivity() {
             )
         }else{
             registerReceiver(locationReceiver, filter)
+        }
+        NetworkUtils.startNetworkCallback(this)
+
+        NetworkUtils.networkStatus.observe(this) { isConnected ->
+            if (isConnected) {
+                locationViewModel.setError("")
+            } else {
+                locationViewModel.setError("No Internet Connection")
+            }
         }
         startService()
     }
@@ -148,6 +157,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         stopService()
         unregisterReceiver(locationReceiver)
+        NetworkUtils.stopNetworkCallback(this)
         super.onDestroy()
     }
 }

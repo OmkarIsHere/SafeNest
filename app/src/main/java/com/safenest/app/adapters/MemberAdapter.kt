@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.safenest.app.R
 import com.safenest.app.model.Member
+import com.safenest.app.util.Extension
 
 
 class MemberAdapter(private val context: Context, private val members : ArrayList<Member>) : RecyclerView.Adapter<MemberAdapter.ViewHolder>() {
@@ -21,7 +22,7 @@ class MemberAdapter(private val context: Context, private val members : ArrayLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.memberName.text = "Name: ${members[position].userName}"
-        holder.lastSeen.text = "Last seen: ${members[position].dateTime}"
+        holder.lastSeen.text = "Last seen: ${Extension.convertDateTime(members[position].dateTime?: "")}"
         if(members[position].userIcon!!.isNotEmpty()){
             Glide.with(context).load(members[position].userIcon).into(holder.userIcon)
         }

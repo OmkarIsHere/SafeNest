@@ -1,20 +1,15 @@
 package com.safenest.app.ui.location
 
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.os.BatteryManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -34,6 +29,7 @@ import com.safenest.app.R
 import com.safenest.app.R.*
 import com.safenest.app.databinding.FragmentLocationBinding
 import com.safenest.app.model.Member
+import com.safenest.app.util.Extension
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 
@@ -127,9 +123,6 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         googleMap.setOnMarkerClickListener { marker ->
             markerMap[marker]?.let { member ->
                 showBottomSheetDialog(requireContext(), member)
-                Log.w("GoogleMap", "markerMap: $markerMap")
-                Log.w("GoogleMap", "marker: $marker")
-                Log.w("GoogleMap", "member: $member")
             }
             true
         }
@@ -192,7 +185,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
 
     private fun showBottomSheetDialog(context: Context, member:Member) {
         val dialog = BottomSheetDialog(context)
-        val view = layoutInflater.inflate(layout.user_info_dialog, null)
+        val view = layoutInflater.inflate(layout.user_info_bottom_sheet, null)
 
         val mImg = view.findViewById<ImageView>(R.id.memberIcon)
         val mName = view.findViewById<TextView>(R.id.txtMemberName)
@@ -207,7 +200,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         Glide.with(context).load(member.userIcon).into(mImg)
         mName.text = member.userName
         mPhone.text = member.userPhone
-        dateTime.text = member.dateTime
+        dateTime.text = Extension.convertDateTime(member.dateTime?:"")
         location.text = member.userLatLng
         battery.text = "${member.battery}%"
         network.text = member.internet

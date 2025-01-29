@@ -41,9 +41,9 @@ class LocationManager(firebaseDatabase: FirebaseDatabase, private val sharedPref
             battery = battery,
             userIcon = icon,
             userLatLng = "$lat, $lng",
+            internet = NetworkUtils.networkType.value,
             dateTime = formattedDate
         )
-        Log.d("GoogleMap", "setData: $member")
         locationRef.child(id).setValue(member)
     }
 

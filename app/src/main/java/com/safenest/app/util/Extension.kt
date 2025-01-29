@@ -1,6 +1,9 @@
 package com.safenest.app.util
 
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class Extension {
 
@@ -38,6 +41,14 @@ class Extension {
         fun hashPassword(password: String): String {
             val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
             return bytes.joinToString("") { "%02x".format(it) }
+        }
+
+        fun convertDateTime(dateTime : String):String{
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault())
+
+            val date: Date? = inputFormat.parse(dateTime)
+            return date?.let { outputFormat.format(it) } ?: dateTime
         }
 
     }
