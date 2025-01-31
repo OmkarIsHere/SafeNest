@@ -49,11 +49,13 @@ class MainActivity : AppCompatActivity() {
     private val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         arrayOf(
             Manifest.permission.POST_NOTIFICATIONS,
+            Manifest.permission.CALL_PHONE,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
     } else {
         arrayOf(
+            Manifest.permission.CALL_PHONE,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )

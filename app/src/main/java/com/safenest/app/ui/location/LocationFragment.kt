@@ -1,15 +1,20 @@
 package com.safenest.app.ui.location
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -205,8 +210,26 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         battery.text = "${member.battery}%"
         network.text = member.internet
 
-        call.setOnClickListener {  }
-        message.setOnClickListener {  }
+        call.setOnClickListener {
+            try{
+                val phoneIntent = Intent(Intent.ACTION_CALL)
+                phoneIntent.data = Uri.parse("tel:${member.userPhone}")
+                startActivity(phoneIntent)
+            } catch (e: Exception) {
+                Toast.makeText(context, "Please allow phone call permission from settings.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        message.setOnClickListener {
+            try {
+                val uri = Uri.parse("https://wa.me/${member.userPhone}?text=${Uri.encode("Hello!!")}")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                intent.setPackage("com.whatsapp")
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(context, "WhatsApp is not installed on your device.", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         dialog.setContentView(view)
         dialog.show()

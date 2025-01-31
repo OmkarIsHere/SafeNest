@@ -234,7 +234,7 @@
             android:layout_width="@dimen/size_little_max_large"
             android:layout_height="@dimen/size_little_max_large"
             android:contentDescription="Message"
-            android:src="@drawable/ic_message_24"
+            android:src="@drawable/ic_whatsapp"
             android:layout_margin="@dimen/size_medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
