@@ -1,12 +1,18 @@
 package com.safenest.app.di
 
 import android.content.Context
+import com.google.gson.GsonBuilder
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.safenest.app.constant.AppConstant
+import com.safenest.app.repository.NotificationRepository
+import com.safenest.app.repository.NotificationRepositoryImpl
+import com.safenest.app.service.ApiService
 import com.safenest.app.service.NotificationService
 import com.safenest.app.ui.authentication.login.LoginViewModel
 import com.safenest.app.ui.authentication.signup.SignupViewModel
@@ -32,6 +38,19 @@ val appModule = module {
     single { SharedPrefManager(get()) }
     single { LocationManager(get(), get()) }
     single { NotificationService() }
+
+    single {
+        GsonBuilder().setLenient().create()
+    }
+
+    single<ApiService> {
+        Retrofit.Builder()
+            .baseUrl(AppConstant.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(get()))
+            .build()
+            .create(ApiService::class.java)
+    }
+    single<NotificationRepository> { NotificationRepositoryImpl(get())  }
 
     viewModel { SignupViewModel(get(), get(), get()) }
     viewModel { LoginViewModel(get(), get()) }

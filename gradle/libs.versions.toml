@@ -26,7 +26,7 @@ firebaseMessagingKtx = "24.1.0"
 retrofit = "2.9.0"
 retrofitGson = "2.9.0"
 glide = "4.16.0"
-googleAuth = "1.15.0"
+googleAuth = "1.16.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

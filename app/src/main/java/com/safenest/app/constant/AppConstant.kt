@@ -2,6 +2,8 @@ package com.safenest.app.constant
 
 object AppConstant {
 
+    const val BASE_URL = "https://fcm.googleapis.com"
+
     //Collections
     const val USER = "User"
     const val NEST = "Nest"
@@ -18,9 +20,10 @@ object AppConstant {
     const val userPhone = "USERPHONE"
     const val userNest = "USERNEST"
 
-    //Services
+    //Notification Services
     const val CHANNEL_ID = "channel_id"
     const val CHANNEL_NAME = "channel_name"
+    const val NOTIFICATION_URL = "/v1/projects/safenest-2ae47/messages:send"
 
     //Men Icons
     const val M1 = "https://dl.dropboxusercontent.com/s/k5r5b2l6xbjyv0v/m1.png?dl=0"
@@ -33,4 +36,6 @@ object AppConstant {
     const val W2 = "https://dl.dropboxusercontent.com/s/tavueqmubgh5qj8/w2.png?dl=0"
     const val W3 = "https://dl.dropboxusercontent.com/s/ci57dtq7nl43fx7/w3.png?dl=0"
     const val W4 = "https://dl.dropboxusercontent.com/s/9enfsgflwsqpyyi/w4.png?dl=0"
+
+
 }

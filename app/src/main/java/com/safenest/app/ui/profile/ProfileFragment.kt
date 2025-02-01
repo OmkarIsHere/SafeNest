@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.safenest.app.constant.AppConstant
@@ -61,6 +62,11 @@ class ProfileFragment : Fragment() {
             val intent = Intent(requireActivity(), AuthenticationActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
+        }
+
+        userIcon.setOnClickListener {
+            profileViewModel.generateBearerToken()
+//            Toast.makeText(requireActivity(), token, Toast.LENGTH_LONG).show()
         }
     }
 

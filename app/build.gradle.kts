@@ -61,6 +61,10 @@ android {
     lint {
         checkReleaseBuilds = false
     }
+
+    packaging {
+        resources.excludes.add("META-INF/DEPENDENCIES")
+    }
 }
 
 dependencies {
@@ -104,5 +108,11 @@ dependencies {
 
     //Glide(For Image)
     implementation(libs.glide)
+
+    //Google-auth
+    implementation(libs.google.auth)
+
+
+
 
 }
