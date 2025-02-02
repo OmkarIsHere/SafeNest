@@ -7,10 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.ResultState
+import com.safenest.app.service.NotificationService
 import com.safenest.app.util.Extension
 import com.safenest.app.util.SharedPrefManager
 
-class LoginViewModel(private val firestore : FirebaseFirestore, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
+class LoginViewModel(
+    private val firestore : FirebaseFirestore,
+    private val notificationService: NotificationService,
+    private val sharedPrefManager: SharedPrefManager) : ViewModel() {
 
     private val TAG = "LoginViewModel"
 
@@ -70,6 +74,7 @@ class LoginViewModel(private val firestore : FirebaseFirestore, private val shar
                         setDataToPreference(AppConstant.userPhone, document.getString("phone") ?: "")
                         setDataToPreference(AppConstant.userNest, document.getString("nestId") ?: "")
                         setDataToPreference(AppConstant.userIcon, document.getString("userIcon") ?: "")
+                        notificationService.subscribeToTopic(document.getString("nestId") ?: "")
                     }
                     _authStatus.postValue(ResultState.Success("Logged in successfully"))
                 } else {

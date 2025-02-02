@@ -63,4 +63,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtError" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnNotify"
+        style="@style/Widget.App.Button.Rounded"
+        android:layout_marginEnd="@dimen/size_large"
+        android:layout_marginBottom="@dimen/size_large_padding"
+        android:text="Notify\nmembers"
+        android:textAppearance="@style/Regular.Bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

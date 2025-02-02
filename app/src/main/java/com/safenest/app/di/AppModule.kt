@@ -52,12 +52,12 @@ val appModule = module {
     }
     single<NotificationRepository> { NotificationRepositoryImpl(get())  }
 
-    viewModel { SignupViewModel(get(), get(), get()) }
-    viewModel { LoginViewModel(get(), get()) }
+    viewModel { SignupViewModel(get(), get(), get(), get()) }
+    viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { NestViewModel(get(), get()) }
     viewModel { YourNestViewModel(get(), get()) }
     viewModel { UploadImageViewModel(get(), get(), get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
     viewModel { LocationViewModel(get(), get(), get()) }
 
 }

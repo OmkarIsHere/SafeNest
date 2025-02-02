@@ -15,5 +15,5 @@ data class NotificationData(
 )
 
 data class FcmResponse(
-    val messageId: String
+    val name: String
 )

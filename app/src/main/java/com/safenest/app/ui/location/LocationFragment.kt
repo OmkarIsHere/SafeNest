@@ -2,8 +2,6 @@ package com.safenest.app.ui.location
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -12,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -37,7 +36,6 @@ import com.safenest.app.model.Member
 import com.safenest.app.util.Extension
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-
 class LocationFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: FragmentLocationBinding? = null
@@ -48,6 +46,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
     private lateinit var error : TextView
     private lateinit var map : MapView
     private lateinit var googleMap: GoogleMap
+    private lateinit var notify: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,6 +63,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         with(binding){
             error = txtError
             map = mapView
+            notify = btnNotify
         }
         map.onCreate(savedInstanceState)
         map.getMapAsync(this)
@@ -75,6 +75,10 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
             }else{
                 error.visibility = View.GONE
             }
+        }
+
+        notify.setOnClickListener {
+            locationViewModel.sendNotification()
         }
 
     }

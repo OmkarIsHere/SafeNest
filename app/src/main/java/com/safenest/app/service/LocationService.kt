@@ -8,7 +8,9 @@ import androidx.core.app.ActivityCompat
 import android.Manifest
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.Notification
+import android.content.ContentResolver
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -27,6 +29,8 @@ class LocationService : Service() {
     private val tag = "LocationService"
 
     private lateinit var notification : Notification
+
+    private val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + "com.safenest.app" + "/" + R.raw.message_pop_alert)
 
     private val locationRequest by lazy {
         LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, 60000)
@@ -105,12 +109,13 @@ class LocationService : Service() {
     }
 
     private fun startServiceOfForeground(lat: String, lng: String) {
+
          notification = NotificationCompat.Builder(this, AppConstant.CHANNEL_ID)
             .setSmallIcon(R.drawable.icon)
-            .setSound(null)
+            .setSound(sound)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setVibrate(null)
-            .setContentTitle("Location Updates")
+            .setContentTitle("Current Location")
             .setContentText("$lat, $lng")
             .build()
 
@@ -129,7 +134,7 @@ class LocationService : Service() {
         super.onDestroy()
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-        stopForeground(true)
+        stopForeground(false)
         Log.d(tag, "Service destroyed")
     }
 }

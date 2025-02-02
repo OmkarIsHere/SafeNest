@@ -13,8 +13,7 @@ interface NotificationRepository  {
 class NotificationRepositoryImpl(private val apiService: ApiService) : NotificationRepository{
     override suspend fun sendNotification(authToken: String, fcmMessage: FcmMessage): Response<FcmResponse> {
         return try {
-            val response = apiService.sendNotification(authToken, fcmMessage)
-
+            val response = apiService.sendNotification("Bearer $authToken", fcmMessage)
             if (response.isSuccessful) {
                 Response.Success(response.body()!!)
             } else {

@@ -16,10 +16,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.util.Extension
 import com.safenest.app.model.User
+import com.safenest.app.service.NotificationService
 import com.safenest.app.util.SharedPrefManager
 import java.util.concurrent.TimeUnit
 
-class SignupViewModel(private val auth : FirebaseAuth, private val firestore : FirebaseFirestore, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
+class SignupViewModel(
+    private val auth : FirebaseAuth,
+    private val firestore : FirebaseFirestore,
+    private val notificationService: NotificationService,
+    private val sharedPrefManager: SharedPrefManager) : ViewModel() {
 
     private val TAG = "SignupViewModel"
 
@@ -149,6 +154,7 @@ class SignupViewModel(private val auth : FirebaseAuth, private val firestore : F
                 setDataToPreference(AppConstant.userEmail, user.email ?: "")
                 setDataToPreference(AppConstant.userPhone, user.phone ?: "")
                 setDataToPreference(AppConstant.userNest, user.nestId ?: "")
+                notificationService.subscribeToTopic(user.nestId ?: "")
                 _authStatus.postValue(AuthStatus.Success("Sign up completed"))
             }
             .addOnFailureListener { exception ->

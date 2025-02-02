@@ -3,16 +3,18 @@ package com.safenest.app.ui.profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.auth.oauth2.GoogleCredentials
+import com.safenest.app.service.NotificationService
 import com.safenest.app.util.SharedPrefManager
 import java.io.ByteArrayInputStream
 
-class ProfileViewModel(private val sharedPrefManager: SharedPrefManager) : ViewModel() {
+class ProfileViewModel(private val sharedPrefManager: SharedPrefManager, private val notificationService: NotificationService) : ViewModel() {
 
     fun getDataFromPreference(key: String, value: String) : String{
         return sharedPrefManager.getString(key, value)
     }
 
     fun logout(){
+        notificationService.unSubscribeToTopic("Hello")
         sharedPrefManager.clearPreference()
     }
 

@@ -23,6 +23,8 @@ object AppConstant {
     //Notification Services
     const val CHANNEL_ID = "channel_id"
     const val CHANNEL_NAME = "channel_name"
+    const val NOTIFICATION_ID = "notification_id"
+    const val NOTIFICATION_NAME = "notification_name"
     const val NOTIFICATION_URL = "/v1/projects/safenest-2ae47/messages:send"
 
     //Men Icons
