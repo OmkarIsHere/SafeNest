@@ -1,24 +1,25 @@
-package com.safenest.app.util
+package com.safenest.app.util.manager
 
-import android.util.Log
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.Member
+import com.safenest.app.util.NetworkUtils
+import com.safenest.app.util.SharedPrefManager
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class LocationManager(firebaseDatabase: FirebaseDatabase, private val sharedPrefManager: SharedPrefManager) {
+class LiveDataManager(firebaseDatabase: FirebaseDatabase, private val sharedPrefManager: SharedPrefManager) {
 
     private val dbReference = firebaseDatabase.reference
 
-    private val id = getDataFromPreference(AppConstant.userId)
-    private val fName = getDataFromPreference(AppConstant.userFirstName)
-    private val lName = getDataFromPreference(AppConstant.userLastName)
-    private val phone = getDataFromPreference(AppConstant.userPhone)
-    private val icon = getDataFromPreference(AppConstant.userIcon)
-    private val nestId = getDataFromPreference(AppConstant.userNest)
+    private val id = getDataFromPreference(AppConstant.USERID)
+    private val fName = getDataFromPreference(AppConstant.USER_FIRSTNAME)
+    private val lName = getDataFromPreference(AppConstant.USER_LASTNAME)
+    private val phone = getDataFromPreference(AppConstant.USER_PHONE)
+    private val icon = getDataFromPreference(AppConstant.USER_ICON)
+    private val nestId = getDataFromPreference(AppConstant.USER_NEST)
 
     private val locationRef = dbReference
         .child(AppConstant.LIVE_LOCATION)

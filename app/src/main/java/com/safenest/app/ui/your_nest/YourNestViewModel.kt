@@ -21,7 +21,7 @@ class YourNestViewModel(private val firestore : FirebaseFirestore, private val s
     val resultState: LiveData<ResultState> get() = _resultState
 
     fun getNestData(){
-        val nestId = sharedPrefManager.getString(AppConstant.userNest, "")
+        val nestId = sharedPrefManager.getString(AppConstant.USER_NEST, "")
         firestore.collection(AppConstant.NEST)
             .document(nestId)
             .get()

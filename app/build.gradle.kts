@@ -85,6 +85,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //Work-Runtime
+    implementation(libs.work.runtime)
+
     //OTP view
     implementation(libs.otpview)
 

@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,7 +79,8 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         }
 
         notify.setOnClickListener {
-            locationViewModel.sendNotification()
+            Log.d("DOWORK", "getCurrentLocation: 0")
+            locationViewModel.myOneTimeWork(requireContext())
         }
 
     }

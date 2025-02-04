@@ -31,7 +31,7 @@ class NestViewModel(private val firestore : FirebaseFirestore, private val share
             _nestState.postValue(NestState.Failure("Please enter a nest name"))
             return
         }else{
-            uId = getDataFromPreference(AppConstant.userId, "")
+            uId = getDataFromPreference(AppConstant.USERID, "")
 
             if(checkUserInNestOrNot(uId)){
                 _nestState.postValue(NestState.Failure("You are already in a nest"))
@@ -67,7 +67,7 @@ class NestViewModel(private val firestore : FirebaseFirestore, private val share
             _nestState.postValue(NestState.Failure("Please enter a nest code"))
             return
         }else{
-            uId = getDataFromPreference(AppConstant.userId, "")
+            uId = getDataFromPreference(AppConstant.USERID, "")
             addMemberToNest(uId, nId)
         }
     }
@@ -123,7 +123,7 @@ class NestViewModel(private val firestore : FirebaseFirestore, private val share
                     }else{
                         _nestState.postValue(NestState.Success("Nest created successfully"))
                     }
-                    setDataToPreference(AppConstant.userNest, nId)
+                    setDataToPreference(AppConstant.USER_NEST, nId)
                     Log.d(TAG, "user's nest id updated")
                 }
                 .addOnFailureListener { exception ->

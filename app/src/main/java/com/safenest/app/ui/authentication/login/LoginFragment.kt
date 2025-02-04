@@ -94,8 +94,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun getSharedPrefData(){
-        loginViewModel.getDataFromPreference(AppConstant.userId, "")
-        nestId = loginViewModel.getDataFromPreference(AppConstant.userNest, "")
+        loginViewModel.getDataFromPreference(AppConstant.USERID, "")
+        nestId = loginViewModel.getDataFromPreference(AppConstant.USER_NEST, "")
     }
 
     private fun redirectToHomeScreen(){

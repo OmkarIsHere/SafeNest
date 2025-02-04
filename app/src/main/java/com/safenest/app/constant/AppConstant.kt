@@ -10,22 +10,32 @@ object AppConstant {
     const val LIVE_LOCATION = "Live_Location"
 
     //SharedPreference Constants
-    const val prefName = "UserData"
+    const val PREF_NAME = "UserData"
 
-    const val userId = "USERID"
-    const val userFirstName = "USERFIRSTNAME"
-    const val userLastName = "USERLASTNAME"
-    const val userIcon = "USERICON"
-    const val userEmail = "USEREMAIL"
-    const val userPhone = "USERPHONE"
-    const val userNest = "USERNEST"
+    const val USERID = "USERID"
+    const val USER_FIRSTNAME = "USER_FIRSTNAME"
+    const val USER_LASTNAME = "USER_LASTNAME"
+    const val USER_ICON = "USER_ICON"
+    const val USER_EMAIL = "USER_EMAIL"
+    const val USER_PHONE = "USER_PHONE"
+    const val USER_NEST = "USER_NEST"
+    const val NOTIFY_STARTED = "NOTIFY_STARTED"
 
-    //Notification Services
+
+    //Notification Service
     const val CHANNEL_ID = "channel_id"
     const val CHANNEL_NAME = "channel_name"
     const val NOTIFICATION_ID = "notification_id"
     const val NOTIFICATION_NAME = "notification_name"
     const val NOTIFICATION_URL = "/v1/projects/safenest-2ae47/messages:send"
+
+    //Work Manager requirements
+    const val ID = "id"
+    const val N_ID = "n_id"
+    const val N_NAME = "n_name"
+    const val TITLE = "title"
+    const val BODY = "body"
+    const val DO_WORK = "DO_WORK"
 
     //Men Icons
     const val M1 = "https://dl.dropboxusercontent.com/s/k5r5b2l6xbjyv0v/m1.png?dl=0"

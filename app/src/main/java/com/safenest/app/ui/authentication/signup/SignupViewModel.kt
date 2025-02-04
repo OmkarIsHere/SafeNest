@@ -148,12 +148,12 @@ class SignupViewModel(
         val userCollection = firestore.collection(AppConstant.USER).document(user.id!!)
         userCollection.set(user)
             .addOnSuccessListener {
-                setDataToPreference(AppConstant.userId, user.id ?: "")
-                setDataToPreference(AppConstant.userFirstName, user.firstName ?: "")
-                setDataToPreference(AppConstant.userFirstName, user.lastName ?: "")
-                setDataToPreference(AppConstant.userEmail, user.email ?: "")
-                setDataToPreference(AppConstant.userPhone, user.phone ?: "")
-                setDataToPreference(AppConstant.userNest, user.nestId ?: "")
+                setDataToPreference(AppConstant.USERID, user.id ?: "")
+                setDataToPreference(AppConstant.USER_FIRSTNAME, user.firstName ?: "")
+                setDataToPreference(AppConstant.USER_FIRSTNAME, user.lastName ?: "")
+                setDataToPreference(AppConstant.USER_EMAIL, user.email ?: "")
+                setDataToPreference(AppConstant.USER_PHONE, user.phone ?: "")
+                setDataToPreference(AppConstant.USER_NEST, user.nestId ?: "")
                 notificationService.subscribeToTopic(user.nestId ?: "")
                 _authStatus.postValue(AuthStatus.Success("Sign up completed"))
             }

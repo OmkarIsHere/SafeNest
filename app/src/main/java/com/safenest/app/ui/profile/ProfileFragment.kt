@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.safenest.app.constant.AppConstant
@@ -71,12 +70,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadUserData(){
-        uIcon = profileViewModel.getDataFromPreference(AppConstant.userIcon,"")
+        uIcon = profileViewModel.getDataFromPreference(AppConstant.USER_ICON,"")
 
-        val firstName = profileViewModel.getDataFromPreference(AppConstant.userFirstName,"")
-        val lastName = profileViewModel.getDataFromPreference(AppConstant.userLastName,"")
+        val firstName = profileViewModel.getDataFromPreference(AppConstant.USER_FIRSTNAME,"")
+        val lastName = profileViewModel.getDataFromPreference(AppConstant.USER_LASTNAME,"")
         uName = "$firstName $lastName"
-        uEmail = profileViewModel.getDataFromPreference(AppConstant.userEmail,"")
-        uPhone = profileViewModel.getDataFromPreference(AppConstant.userPhone,"")
+        uEmail = profileViewModel.getDataFromPreference(AppConstant.USER_EMAIL,"")
+        uPhone = profileViewModel.getDataFromPreference(AppConstant.USER_PHONE,"")
     }
 }

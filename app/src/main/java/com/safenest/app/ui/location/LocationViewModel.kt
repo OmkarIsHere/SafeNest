@@ -6,6 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,10 +20,12 @@ import com.safenest.app.model.FcmMessage
 import com.safenest.app.model.Member
 import com.safenest.app.model.MessageData
 import com.safenest.app.model.NotificationData
+import com.safenest.app.model.PayLoadData
 import com.safenest.app.repository.NotificationRepository
-import com.safenest.app.util.LocationManager
+import com.safenest.app.util.manager.LiveDataManager
 import com.safenest.app.util.Miscellaneous
 import com.safenest.app.util.SharedPrefManager
+import com.safenest.app.util.manager.NotifyWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -26,7 +33,7 @@ import kotlinx.coroutines.withContext
 import java.io.ByteArrayInputStream
 
 class LocationViewModel(
-    private val locationManager: LocationManager,
+    private val liveDataManager: LiveDataManager,
     private val sharedPrefManager: SharedPrefManager,
     private val notificationRepository: NotificationRepository) : ViewModel() {
 
@@ -42,12 +49,12 @@ class LocationViewModel(
 
     fun updateDatabase(context: Context, lat: String, lng: String){
         val battery = Miscellaneous(context).getBatteryPercentage()
-        locationManager.setData(lat, lng, battery)
+        liveDataManager.setData(lat, lng, battery)
     }
 
     fun readDatabase(){
-        val locationRef = locationManager.getData()
-        val userId = sharedPrefManager.getString(AppConstant.userId, "")
+        val locationRef = liveDataManager.getData()
+        val userId = sharedPrefManager.getString(AppConstant.USERID, "")
         locationRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val locations = mutableListOf<Member>()
@@ -76,7 +83,22 @@ class LocationViewModel(
         })
     }
 
-     fun sendNotification(){
+    fun myOneTimeWork(context: Context) {
+        Log.d("DOWORK", "getCurrentLocation: 1")
+        val constraints: Constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresCharging(false)
+            .build()
+        Log.d("DOWORK", "getCurrentLocation: 2")
+        val myWorkRequest: WorkRequest = OneTimeWorkRequest.Builder(NotifyWorker::class.java)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(context).enqueue(myWorkRequest)
+        Log.d("DOWORK", "getCurrentLocation: 3")
+    }
+
+     private fun sendNotification(){
         viewModelScope.launch {
             val tokenDeferred = async(Dispatchers.IO) { generateBearerToken() }
             val token = tokenDeferred.await()
@@ -85,11 +107,13 @@ class LocationViewModel(
                 Log.e("NotificationService", "Failed to get Bearer Token")
                 return@launch
             }
-            val nestId = sharedPrefManager.getString(AppConstant.userNest, "")
+            val nestId = sharedPrefManager.getString(AppConstant.USER_NEST, "")
+            val userId = sharedPrefManager.getString(AppConstant.USERID, "")
             val fcmMessage = FcmMessage(
                 MessageData(
                     topic = nestId,
-                    NotificationData("Testinnggg", "Just Testinng")
+                    NotificationData("Testinnggg", "Just Testinng"),
+                    PayLoadData(userId, AppConstant.NOTIFICATION_ID, AppConstant.NOTIFICATION_NAME, 2)
                 )
             )
 
@@ -126,7 +150,6 @@ class LocationViewModel(
 
                 credentials.refreshIfExpired()
                 Log.d("BEARERTOKEN", "generateBearerToken: ${credentials.accessToken.tokenValue}")
-//                token = credentials.accessToken.tokenValue
                 return@withContext credentials.accessToken.tokenValue
             } catch (e: Exception) {
                 Log.e("BEARERTOKEN", e.stackTraceToString())

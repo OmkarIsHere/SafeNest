@@ -21,7 +21,7 @@ import com.safenest.app.ui.nest.NestViewModel
 import com.safenest.app.ui.nest.upload_image.UploadImageViewModel
 import com.safenest.app.ui.profile.ProfileViewModel
 import com.safenest.app.ui.your_nest.YourNestViewModel
-import com.safenest.app.util.LocationManager
+import com.safenest.app.util.manager.LiveDataManager
 import com.safenest.app.util.SharedPrefManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -36,7 +36,7 @@ val appModule = module {
 
     single { provideSharedPreferences(androidContext()) }
     single { SharedPrefManager(get()) }
-    single { LocationManager(get(), get()) }
+    single { LiveDataManager(get(), get()) }
     single { NotificationService() }
 
     single {
@@ -50,7 +50,7 @@ val appModule = module {
             .build()
             .create(ApiService::class.java)
     }
-    single<NotificationRepository> { NotificationRepositoryImpl(get())  }
+    single<NotificationRepository> { NotificationRepositoryImpl(get()) }
 
     viewModel { SignupViewModel(get(), get(), get(), get()) }
     viewModel { LoginViewModel(get(), get(), get()) }
@@ -63,5 +63,5 @@ val appModule = module {
 }
 
 fun provideSharedPreferences(context: Context): SharedPreferences {
-    return context.getSharedPreferences(AppConstant.prefName, Context.MODE_PRIVATE)
+    return context.getSharedPreferences(AppConstant.PREF_NAME, Context.MODE_PRIVATE)
 }

@@ -19,17 +19,10 @@ import com.safenest.app.R
 import com.safenest.app.constant.AppConstant
 import org.koin.android.ext.android.inject
 
-
 class NotificationService() : FirebaseMessagingService() {
 
     private val TAG = "NotificationService"
     private val firebaseMessaging: FirebaseMessaging by inject()
-    private val audioAttributes = AudioAttributes.Builder()
-        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-        .build()
-
-    private val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + "com.safenest.app" + "/" + R.raw.message_pop_alert)
 
     fun subscribeToTopic(nestId : String){
         firebaseMessaging.subscribeToTopic(nestId)
@@ -59,12 +52,15 @@ class NotificationService() : FirebaseMessagingService() {
             Log.d(TAG, "onMessageReceived: ${remoteMessage.notification!!.title}")
             showNotification(
                 remoteMessage.notification?.title?:"",
-                remoteMessage.notification?.body?:"")
+                remoteMessage.notification?.body?:"",
+                AppConstant.NOTIFICATION_ID,
+                AppConstant.NOTIFICATION_NAME,
+                2)
         }
     }
 
-    private fun showNotification(title:String, body:String){
-        val notification = NotificationCompat.Builder(this, AppConstant.NOTIFICATION_ID)
+    fun showNotification(title:String, body:String, notificationId: String, notificationName: String, id:Int){
+        val notification = NotificationCompat.Builder(applicationContext, notificationId)
             .setSmallIcon(R.drawable.icon)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setVibrate(longArrayOf(
@@ -77,35 +73,35 @@ class NotificationService() : FirebaseMessagingService() {
                 .setContentText(body)
                 .setGroup(title)
 
-        val notificationManager = getSystemService(
+        val notificationManager = applicationContext.getSystemService(
             Context.NOTIFICATION_SERVICE
-        ) as NotificationManager?
+        ) as NotificationManager
 
         if (Build.VERSION.SDK_INT
             >= Build.VERSION_CODES.O
         ) {
             val notificationChannel = NotificationChannel(
-                AppConstant.NOTIFICATION_ID,
-                AppConstant.NOTIFICATION_NAME,
+                notificationId,
+                notificationName,
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 enableVibration(true)
                 enableLights(true)
                 setSound((sound),audioAttributes)
             }
-            notificationManager!!.createNotificationChannel(
+            notificationManager.createNotificationChannel(
                 notificationChannel
             )
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, POST_NOTIFICATIONS
+            if (ContextCompat.checkSelfPermission(applicationContext, POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                notificationManager!!.notify(2, notification.build())
+                notificationManager.notify(id, notification.build())
             }
         } else {
-            notificationManager!!.notify(2, notification.build())
+            notificationManager.notify(id, notification.build())
         }
 
     }

@@ -26,7 +26,7 @@ class LoginViewModel(
 
     fun getDataFromPreference(key: String, value: String) : String{
         val str = sharedPrefManager.getString(key, value)
-        if(key == AppConstant.userId) _userId.value = str
+        if(key == AppConstant.USERID) _userId.value = str
         return str
     }
 
@@ -67,13 +67,13 @@ class LoginViewModel(
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
                     for (document in documents) {
-                        setDataToPreference(AppConstant.userId, document.getString("id") ?: "")
-                        setDataToPreference(AppConstant.userFirstName, document.getString("firstName") ?: "")
-                        setDataToPreference(AppConstant.userLastName, document.getString("lastName") ?: "")
-                        setDataToPreference(AppConstant.userEmail, document.getString("email") ?: "")
-                        setDataToPreference(AppConstant.userPhone, document.getString("phone") ?: "")
-                        setDataToPreference(AppConstant.userNest, document.getString("nestId") ?: "")
-                        setDataToPreference(AppConstant.userIcon, document.getString("userIcon") ?: "")
+                        setDataToPreference(AppConstant.USERID, document.getString("id") ?: "")
+                        setDataToPreference(AppConstant.USER_FIRSTNAME, document.getString("firstName") ?: "")
+                        setDataToPreference(AppConstant.USER_LASTNAME, document.getString("lastName") ?: "")
+                        setDataToPreference(AppConstant.USER_EMAIL, document.getString("email") ?: "")
+                        setDataToPreference(AppConstant.USER_PHONE, document.getString("phone") ?: "")
+                        setDataToPreference(AppConstant.USER_NEST, document.getString("nestId") ?: "")
+                        setDataToPreference(AppConstant.USER_ICON, document.getString("userIcon") ?: "")
                         notificationService.subscribeToTopic(document.getString("nestId") ?: "")
                     }
                     _authStatus.postValue(ResultState.Success("Logged in successfully"))
