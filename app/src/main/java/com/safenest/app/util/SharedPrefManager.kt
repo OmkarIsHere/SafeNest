@@ -12,6 +12,14 @@ class SharedPrefManager(private val sharedPreferences: SharedPreferences) {
         sharedPreferences.edit().putString(key, value).apply()
     }
 
+    fun getBool(key: String, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
+    }
+
+    fun putBool(key: String, value: Boolean) {
+        sharedPreferences.edit().putBoolean(key, value).apply()
+    }
+
     fun clearPreference(){
         sharedPreferences.edit().clear().apply()
     }

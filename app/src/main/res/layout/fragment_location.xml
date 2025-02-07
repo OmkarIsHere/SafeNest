@@ -68,7 +68,7 @@
         style="@style/Widget.App.Button.Rounded"
         android:layout_marginEnd="@dimen/size_large"
         android:layout_marginBottom="@dimen/size_large_padding"
-        android:text="Notify\nmembers"
+        android:text=""
         android:textAppearance="@style/Regular.Bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

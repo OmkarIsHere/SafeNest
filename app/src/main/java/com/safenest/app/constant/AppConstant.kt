@@ -30,12 +30,7 @@ object AppConstant {
     const val NOTIFICATION_URL = "/v1/projects/safenest-2ae47/messages:send"
 
     //Work Manager requirements
-    const val ID = "id"
-    const val N_ID = "n_id"
-    const val N_NAME = "n_name"
-    const val TITLE = "title"
-    const val BODY = "body"
-    const val DO_WORK = "DO_WORK"
+    const val DO_WORK = "do_work"
 
     //Men Icons
     const val M1 = "https://dl.dropboxusercontent.com/s/k5r5b2l6xbjyv0v/m1.png?dl=0"

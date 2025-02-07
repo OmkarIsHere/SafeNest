@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.google.auth.oauth2.GoogleCredentials
@@ -31,11 +32,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayInputStream
+import java.util.concurrent.TimeUnit
 
-class LocationViewModel(
-    private val liveDataManager: LiveDataManager,
-    private val sharedPrefManager: SharedPrefManager,
-    private val notificationRepository: NotificationRepository) : ViewModel() {
+class LocationViewModel(private val liveDataManager: LiveDataManager, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
@@ -45,6 +44,10 @@ class LocationViewModel(
 
     fun setError(str: String){
         _error.value = str
+    }
+
+    fun isNotifyStarted() : Boolean{
+        return sharedPrefManager.getBool(AppConstant.NOTIFY_STARTED, false)
     }
 
     fun updateDatabase(context: Context, lat: String, lng: String){
@@ -83,22 +86,35 @@ class LocationViewModel(
         })
     }
 
-    fun myOneTimeWork(context: Context) {
-        Log.d("DOWORK", "getCurrentLocation: 1")
-        val constraints: Constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresCharging(false)
-            .build()
-        Log.d("DOWORK", "getCurrentLocation: 2")
-        val myWorkRequest: WorkRequest = OneTimeWorkRequest.Builder(NotifyWorker::class.java)
-            .setConstraints(constraints)
-            .build()
+    fun notifyWork(context: Context, callBack: () -> Unit) {
+        val isNotifyStarted = isNotifyStarted()
+        val workManager = WorkManager.getInstance(context)
 
-        WorkManager.getInstance(context).enqueue(myWorkRequest)
-        Log.d("DOWORK", "getCurrentLocation: 3")
+        if(isNotifyStarted) {
+            workManager.cancelAllWorkByTag(AppConstant.NOTIFY_STARTED)
+            sharedPrefManager.putBool(AppConstant.NOTIFY_STARTED, false)
+        }else{
+            val constraints: Constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(false)
+                .build()
+
+            val myWorkRequest = PeriodicWorkRequest.Builder(
+                NotifyWorker::class.java,
+                30,
+                TimeUnit.MINUTES
+            ).setConstraints(constraints)
+                .addTag(AppConstant.DO_WORK)
+                .build()
+
+            workManager.enqueue(myWorkRequest)
+            sharedPrefManager.putBool(AppConstant.NOTIFY_STARTED, true)
+        }
+        callBack()
     }
 
-     private fun sendNotification(){
+    /*
+    private fun sendNotification(){
         viewModelScope.launch {
             val tokenDeferred = async(Dispatchers.IO) { generateBearerToken() }
             val token = tokenDeferred.await()
@@ -113,7 +129,7 @@ class LocationViewModel(
                 MessageData(
                     topic = nestId,
                     NotificationData("Testinnggg", "Just Testinng"),
-                    PayLoadData(userId, AppConstant.NOTIFICATION_ID, AppConstant.NOTIFICATION_NAME, 2)
+                    PayLoadData(userId, AppConstant.NOTIFICATION_ID, AppConstant.NOTIFICATION_NAME, "2")
                 )
             )
 
@@ -157,4 +173,6 @@ class LocationViewModel(
             }
         }
     }
+
+     */
 }

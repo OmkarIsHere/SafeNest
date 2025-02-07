@@ -119,7 +119,6 @@ class MainActivity : AppCompatActivity() {
     private fun startService(){
         if (hasPermissions()) {
             val intent = Intent(this, LocationService::class.java)
-            intent.putExtra(AppConstant.DO_WORK, false)
             this.startService(intent)
         } else {
             ActivityCompat.requestPermissions(this, permissions, 101)

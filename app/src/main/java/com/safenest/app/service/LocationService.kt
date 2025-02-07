@@ -86,7 +86,6 @@ class LocationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val shouldStartLocationUpdates = intent?.getBooleanExtra(AppConstant.DO_WORK, false) ?: false
         recurringLocationUpdates()
         return START_REDELIVER_INTENT
     }

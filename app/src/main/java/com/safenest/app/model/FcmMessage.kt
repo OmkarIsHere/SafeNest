@@ -7,7 +7,7 @@ data class FcmMessage(
 data class MessageData(
     val topic: String,
     val notification: NotificationData,
-    val payLoadData: PayLoadData
+    val data: PayLoadData
 )
 
 data class NotificationData(
@@ -19,7 +19,7 @@ data class PayLoadData(
     val uId: String,
     val notificationId: String,
     val notificationName: String,
-    val id: Int
+    val id: String
 )
 
 data class FcmResponse(

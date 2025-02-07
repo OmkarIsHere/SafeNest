@@ -68,6 +68,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         }
         map.onCreate(savedInstanceState)
         map.getMapAsync(this)
+        setTextToNotifyButton()
 
         locationViewModel.error.observe(viewLifecycleOwner){ value ->
             if(value.isNotEmpty()){
@@ -79,8 +80,9 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         }
 
         notify.setOnClickListener {
-            Log.d("DOWORK", "getCurrentLocation: 0")
-            locationViewModel.myOneTimeWork(requireContext())
+            locationViewModel.notifyWork(requireContext()){
+                setTextToNotifyButton()
+            }
         }
 
     }
@@ -239,6 +241,11 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
 
         dialog.setContentView(view)
         dialog.show()
+    }
+
+    private fun setTextToNotifyButton(){
+        val notifyText = if(locationViewModel.isNotifyStarted()) "Stop\nnotify" else "Start\nnotify"
+        notify.text = notifyText
     }
 
     override fun onResume() {

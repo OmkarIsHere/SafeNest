@@ -59,7 +59,7 @@ class NotificationService() : FirebaseMessagingService() {
         }
     }
 
-    fun showNotification(title:String, body:String, notificationId: String, notificationName: String, id:Int){
+    private fun showNotification(title:String, body:String, notificationId: String, notificationName: String, id:Int){
         val notification = NotificationCompat.Builder(applicationContext, notificationId)
             .setSmallIcon(R.drawable.icon)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
