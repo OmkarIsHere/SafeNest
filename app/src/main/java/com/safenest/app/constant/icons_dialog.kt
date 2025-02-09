@@ -3,8 +3,6 @@ package com.safenest.app.constant
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.GridView
-import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.safenest.app.R

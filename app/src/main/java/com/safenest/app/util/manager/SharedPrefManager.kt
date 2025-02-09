@@ -1,4 +1,4 @@
-package com.safenest.app.util
+package com.safenest.app.util.manager
 
 import android.content.SharedPreferences
 

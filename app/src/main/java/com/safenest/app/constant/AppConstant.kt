@@ -19,7 +19,6 @@ object AppConstant {
     const val USER_EMAIL = "USER_EMAIL"
     const val USER_PHONE = "USER_PHONE"
     const val USER_NEST = "USER_NEST"
-    const val NOTIFY_STARTED = "NOTIFY_STARTED"
 
 
     //Notification Service

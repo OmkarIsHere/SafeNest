@@ -5,35 +5,25 @@ import androidx.work.WorkerParameters
 import android.content.Context
 import android.content.pm.PackageManager
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Intent
 import android.location.Location
-import android.os.Build
+import android.os.Looper
 import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.auth.oauth2.GoogleCredentials
-import com.safenest.app.R
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.FcmMessage
 import com.safenest.app.model.MessageData
 import com.safenest.app.model.NotificationData
 import com.safenest.app.model.PayLoadData
 import com.safenest.app.repository.NotificationRepository
-import com.safenest.app.service.NotificationService
-import com.safenest.app.ui.MainActivity
-import com.safenest.app.util.SharedPrefManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -50,11 +40,47 @@ class NotifyWorker(context: Context, params: WorkerParameters) : CoroutineWorker
             getCurrentLocation(applicationContext)
             return Result.success()
         }catch (e : Exception){
-            return Result.failure()
+            return Result.retry()
         }
     }
 
-    private fun getCurrentLocation(context: Context){
+//    @SuppressLint("MissingPermission")
+    private fun getCurrentLocation(context: Context) {
+        if (!checkLocationPermission(context)) {
+            Log.e("DOWORK", "Permission denied for location")
+            return
+        }
+
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
+            .setWaitForAccurateLocation(true)
+            .setMinUpdateIntervalMillis(3000)
+            .build()
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    val location = locationResult.lastLocation
+                    if (location != null) {
+                        val latitude = location.latitude
+                        val longitude = location.longitude
+                        val body = "Latitude: $latitude, Longitude: $longitude"
+
+                        Log.d("DOWORK", "getCurrentLocation: Lat: $latitude, Lng: $longitude")
+                        sendNotification(body)
+                    } else {
+                        Log.e("DOWORK", "Location not available")
+                    }
+
+                    fusedLocationClient.removeLocationUpdates(this)
+                }
+            },
+            Looper.getMainLooper()
+        )
+    }
+
+    private fun getCurrentLocation_OLD(context: Context){
         val fusedLocationClient: FusedLocationProviderClient
         if(checkLocationPermission(context = context)){
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -142,6 +168,7 @@ class NotifyWorker(context: Context, params: WorkerParameters) : CoroutineWorker
             }
         }
     }
+
     /*
     private fun showNotification(title :String, body: String) {
 
@@ -195,6 +222,5 @@ class NotifyWorker(context: Context, params: WorkerParameters) : CoroutineWorker
 
     }
      */
-
 
 }

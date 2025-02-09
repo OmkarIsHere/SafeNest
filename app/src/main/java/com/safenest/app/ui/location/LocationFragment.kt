@@ -7,7 +7,6 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,8 +43,8 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
 
     private val locationViewModel: LocationViewModel by activityViewModel<LocationViewModel>()
 
-    private lateinit var error : TextView
-    private lateinit var map : MapView
+    private lateinit var error: TextView
+    private lateinit var map: MapView
     private lateinit var googleMap: GoogleMap
     private lateinit var notify: Button
 
@@ -68,7 +67,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         }
         map.onCreate(savedInstanceState)
         map.getMapAsync(this)
-        setTextToNotifyButton()
+        locationViewModel.isNotifyWorkerStarted(requireActivity())
 
         locationViewModel.error.observe(viewLifecycleOwner){ value ->
             if(value.isNotEmpty()){
@@ -79,10 +78,12 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
+        locationViewModel.isNotifyEnqueue.observe(viewLifecycleOwner){ value ->
+            notify.text = if(value) "STOP\nNOTIFY" else "START\nNOTIFY"
+        }
+
         notify.setOnClickListener {
-            locationViewModel.notifyWork(requireContext()){
-                setTextToNotifyButton()
-            }
+            locationViewModel.notifyWork(requireContext())
         }
 
     }
@@ -104,15 +105,6 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
                 for(m in member){
                     val str = m.userLatLng!!.split(",")
                     latLng = LatLng(str.first().toDouble(), str.last().toDouble())
-
-/*                    googleMap?.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .title(m.userName)
-                            .snippet(m.dateTime)
-                            .icon(getBitmapDescriptorFromVector(requireContext(), drawable.icon))
-                    )
- */
 
                     customMarker(requireContext(), m.userIcon!!) { bitmapDescriptor ->
                         val marker = googleMap.addMarker(
@@ -241,11 +233,6 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
 
         dialog.setContentView(view)
         dialog.show()
-    }
-
-    private fun setTextToNotifyButton(){
-        val notifyText = if(locationViewModel.isNotifyStarted()) "Stop\nnotify" else "Start\nnotify"
-        notify.text = notifyText
     }
 
     override fun onResume() {

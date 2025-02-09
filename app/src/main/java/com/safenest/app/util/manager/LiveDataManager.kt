@@ -5,7 +5,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.Member
 import com.safenest.app.util.NetworkUtils
-import com.safenest.app.util.SharedPrefManager
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

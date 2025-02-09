@@ -22,7 +22,7 @@ import com.safenest.app.ui.nest.upload_image.UploadImageViewModel
 import com.safenest.app.ui.profile.ProfileViewModel
 import com.safenest.app.ui.your_nest.YourNestViewModel
 import com.safenest.app.util.manager.LiveDataManager
-import com.safenest.app.util.SharedPrefManager
+import com.safenest.app.util.manager.SharedPrefManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

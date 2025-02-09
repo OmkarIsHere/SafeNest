@@ -17,14 +17,15 @@ import com.safenest.app.constant.AppConstant
 import com.safenest.app.util.Extension
 import com.safenest.app.model.User
 import com.safenest.app.service.NotificationService
-import com.safenest.app.util.SharedPrefManager
+import com.safenest.app.util.manager.SharedPrefManager
 import java.util.concurrent.TimeUnit
 
 class SignupViewModel(
     private val auth : FirebaseAuth,
     private val firestore : FirebaseFirestore,
     private val notificationService: NotificationService,
-    private val sharedPrefManager: SharedPrefManager) : ViewModel() {
+    private val sharedPrefManager: SharedPrefManager
+) : ViewModel() {
 
     private val TAG = "SignupViewModel"
 

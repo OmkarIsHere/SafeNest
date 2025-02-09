@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.auth.oauth2.GoogleCredentials
 import com.safenest.app.service.NotificationService
-import com.safenest.app.util.SharedPrefManager
+import com.safenest.app.util.manager.SharedPrefManager
 import java.io.ByteArrayInputStream
 
 class ProfileViewModel(private val sharedPrefManager: SharedPrefManager, private val notificationService: NotificationService) : ViewModel() {

@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.ResultState
 import com.safenest.app.model.Nest
-import com.safenest.app.util.SharedPrefManager
+import com.safenest.app.util.manager.SharedPrefManager
 
 class YourNestViewModel(private val firestore : FirebaseFirestore, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
 

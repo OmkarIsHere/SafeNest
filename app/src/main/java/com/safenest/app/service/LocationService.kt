@@ -15,6 +15,8 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -192,7 +194,15 @@ class LocationService : Service() {
         super.onDestroy()
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationProviderClient.removeLocationUpdates(recurringLocationCallback)
-        stopForeground(false)
-        Log.d(tag, "Service destroyed")
+        val workManager = WorkManager.getInstance(applicationContext)
+        workManager.getWorkInfosByTagLiveData(AppConstant.DO_WORK).observeForever { workInfoList ->
+            val isWorkRunning = workInfoList.any { it.state == WorkInfo.State.ENQUEUED }
+            Log.d(tag, "isWorkRunning: $isWorkRunning")
+            if (!isWorkRunning) {
+                stopForeground(STOP_FOREGROUND_DETACH)
+                Log.d(tag, "Service destroyed")
+            }
+        }
+//        stopForeground(false)
     }
 }

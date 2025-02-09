@@ -9,12 +9,13 @@ import com.safenest.app.constant.AppConstant
 import com.safenest.app.model.ResultState
 import com.safenest.app.service.NotificationService
 import com.safenest.app.util.Extension
-import com.safenest.app.util.SharedPrefManager
+import com.safenest.app.util.manager.SharedPrefManager
 
 class LoginViewModel(
     private val firestore : FirebaseFirestore,
     private val notificationService: NotificationService,
-    private val sharedPrefManager: SharedPrefManager) : ViewModel() {
+    private val sharedPrefManager: SharedPrefManager
+) : ViewModel() {
 
     private val TAG = "LoginViewModel"
 
