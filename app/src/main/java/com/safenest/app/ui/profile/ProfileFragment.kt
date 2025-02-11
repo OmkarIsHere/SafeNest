@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.safenest.app.constant.AppConstant
+import com.safenest.app.constant.CustomDialog
+import com.safenest.app.constant.IconsDialog
 import com.safenest.app.databinding.FragmentProfileBinding
 import com.safenest.app.ui.AuthenticationActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -57,15 +59,19 @@ class ProfileFragment : Fragment() {
         userPhone.text = uPhone
 
         logout.setOnClickListener {
-            profileViewModel.logout()
-            val intent = Intent(requireActivity(), AuthenticationActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            // TODO: Handle whether notify start is running/queued or not?
+            val dialog = CustomDialog(requireActivity())
+            dialog.showDialog(
+                title = "Logout",
+                message = "Are you sure, want to logout?",
+                positiveButtonText = "Logout",
+                negativeButtonText = "Cancel",
+                onPositiveClick = { logout() }
+            )
         }
 
         userIcon.setOnClickListener {
-            profileViewModel.generateBearerToken()
-//            Toast.makeText(requireActivity(), token, Toast.LENGTH_LONG).show()
+
         }
     }
 
@@ -77,5 +83,12 @@ class ProfileFragment : Fragment() {
         uName = "$firstName $lastName"
         uEmail = profileViewModel.getDataFromPreference(AppConstant.USER_EMAIL,"")
         uPhone = profileViewModel.getDataFromPreference(AppConstant.USER_PHONE,"")
+    }
+
+    private fun logout(){
+        profileViewModel.logout()
+        val intent = Intent(requireActivity(), AuthenticationActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 }

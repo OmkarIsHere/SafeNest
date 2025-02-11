@@ -51,9 +51,17 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.POST_NOTIFICATIONS,
             Manifest.permission.CALL_PHONE,
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION
         )
-    } else {
+    } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        arrayOf(
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+        )
+    }else {
         arrayOf(
             Manifest.permission.CALL_PHONE,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -72,8 +80,7 @@ class MainActivity : AppCompatActivity() {
 //        val navController = findNavController(R.id.nav_host_fragment_activity_main)
 //        navView.setupWithNavController(navController)
 
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
 
         val keepStateNavigator = KeepStateNavigator(

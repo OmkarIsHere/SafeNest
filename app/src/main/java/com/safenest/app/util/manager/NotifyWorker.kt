@@ -5,6 +5,7 @@ import androidx.work.WorkerParameters
 import android.content.Context
 import android.content.pm.PackageManager
 import android.Manifest
+import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Looper
 import android.util.Log
@@ -44,7 +45,7 @@ class NotifyWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         }
     }
 
-//    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission")
     private fun getCurrentLocation(context: Context) {
         if (!checkLocationPermission(context)) {
             Log.e("DOWORK", "Permission denied for location")
@@ -72,7 +73,6 @@ class NotifyWorker(context: Context, params: WorkerParameters) : CoroutineWorker
                     } else {
                         Log.e("DOWORK", "Location not available")
                     }
-
                     fusedLocationClient.removeLocationUpdates(this)
                 }
             },
@@ -80,7 +80,7 @@ class NotifyWorker(context: Context, params: WorkerParameters) : CoroutineWorker
         )
     }
 
-    private fun getCurrentLocation_OLD(context: Context){
+    private fun getCurrentLocationOLD(context: Context){
         val fusedLocationClient: FusedLocationProviderClient
         if(checkLocationPermission(context = context)){
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
