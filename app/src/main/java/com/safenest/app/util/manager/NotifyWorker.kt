@@ -68,7 +68,7 @@ class NotifyWorker(context: Context, params: WorkerParameters) : CoroutineWorker
                         val longitude = location.longitude
                         val body = "Latitude: $latitude, Longitude: $longitude"
 
-                        Log.d("DOWORK", "getCurrentLocation: Lat: $latitude, Lng: $longitude")
+                        Log.d("DOWORK", "CurrentLocation: Lat: $latitude, Lng: $longitude")
                         sendNotification(body)
                     } else {
                         Log.e("DOWORK", "Location not available")

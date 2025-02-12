@@ -55,15 +55,30 @@
             android:layout_width="@dimen/size_max_large_upload_photo"
             android:layout_height="@dimen/size_max_large_upload_photo"
             android:layout_marginStart="@dimen/size_large"
+            android:layout_marginEnd="@dimen/size_medium"
             android:clickable="true"
             app:strokeWidth="@dimen/smallest_padding"
+            android:padding="@dimen/size_small"
             app:shapeAppearanceOverlay="@style/circleImageView"
             android:contentDescription="User Image"
             android:focusable="true"
-            android:padding="@dimen/size_small"
             android:src="@drawable/person"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/txtUserEmail"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iconEdit"
+            android:layout_width="@dimen/size_little_max_large"
+            android:layout_height="@dimen/size_little_max_large"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="Edit Icon"
+            android:src="@drawable/ic_edit_24"
+            android:background="@drawable/bg_circle"
+            android:padding="@dimen/size_small"
+            app:layout_constraintEnd_toEndOf="@id/iconUser"
+            app:layout_constraintBottom_toBottomOf="@id/iconUser" />
 
         <TextView
             android:id="@+id/txtUserName"

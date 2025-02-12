@@ -14,7 +14,7 @@ class CustomDialog(private val context: Context) {
     fun showDialog(
         title: String,
         message: String,
-        positiveButtonText: String = "OK",
+        positiveButtonText: String = "YES",
         negativeButtonText: String = "Cancel",
         onPositiveClick: (() -> Unit)? = null,
         onNegativeClick: (() -> Unit)? = null

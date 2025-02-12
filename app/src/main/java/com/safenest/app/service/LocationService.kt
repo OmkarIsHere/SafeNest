@@ -196,9 +196,9 @@ class LocationService : Service() {
         fusedLocationProviderClient.removeLocationUpdates(recurringLocationCallback)
         val workManager = WorkManager.getInstance(applicationContext)
         workManager.getWorkInfosByTagLiveData(AppConstant.DO_WORK).observeForever { workInfoList ->
-            val isWorkRunning = workInfoList.any { it.state == WorkInfo.State.ENQUEUED }
-            Log.d(tag, "isWorkRunning: $isWorkRunning")
-            if (!isWorkRunning) {
+            val isWorkEnqueued = workInfoList.any { it.state == WorkInfo.State.ENQUEUED }
+            Log.d(tag, "isWorkRunning: $isWorkEnqueued")
+            if (!isWorkEnqueued) {
                 stopForeground(STOP_FOREGROUND_DETACH)
                 Log.d(tag, "Service destroyed")
             }

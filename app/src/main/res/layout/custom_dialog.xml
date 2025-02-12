@@ -8,8 +8,7 @@
     <TextView
         android:id="@+id/txtDialogTitle"
         style="@style/Medium.Bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_margin="@dimen/size_large"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -18,8 +17,7 @@
     <TextView
         android:id="@+id/txtDialogContent"
         style="@style/Regular"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_marginStart="@dimen/size_large"
         android:layout_marginEnd="@dimen/size_large"
         android:layout_marginTop="@dimen/size_medium"
@@ -33,7 +31,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNegative"
         style="@style/Widget.App.Button.Secondary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="1"
         android:text="Cancel"
         android:background="@drawable/bg_negative_button"
         android:textColor="@color/custom_grey"
@@ -47,8 +46,9 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPositive"
         style="@style/Widget.App.Button.Secondary"
-        android:layout_width="wrap_content"
-        android:text="Ok"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="1"
+        android:text="Yes"
         android:background="@drawable/bg_positive_button_red"
         android:textColor="@color/white"
         android:textAppearance="@style/Regular.Button"

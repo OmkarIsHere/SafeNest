@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.safenest.app.constant.AppConstant
 import com.safenest.app.constant.CustomDialog
 import com.safenest.app.constant.IconsDialog
 import com.safenest.app.databinding.FragmentProfileBinding
+import com.safenest.app.model.ResultState
 import com.safenest.app.ui.AuthenticationActivity
+import com.safenest.app.ui.nest.upload_image.UploadImageViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
@@ -21,6 +26,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val profileViewModel: ProfileViewModel by viewModel()
+    private val uploadImageViewModel: UploadImageViewModel by viewModel()
 
     private lateinit var userIcon : ImageView
     private lateinit var userName : TextView
@@ -53,26 +59,54 @@ class ProfileFragment : Fragment() {
             logout = icLogout
         }
 
-        Glide.with(requireActivity()).load(uIcon).into(userIcon)
+        setIcon(uIcon)
         userName.text = uName
         userEmail.text = uEmail
         userPhone.text = uPhone
 
         logout.setOnClickListener {
-            // TODO: Handle whether notify start is running/queued or not?
-            val dialog = CustomDialog(requireActivity())
-            dialog.showDialog(
-                title = "Logout",
-                message = "Are you sure, want to logout?",
-                positiveButtonText = "Logout",
-                negativeButtonText = "Cancel",
-                onPositiveClick = { logout() }
-            )
+            val workManager = WorkManager.getInstance(requireContext())
+            workManager.getWorkInfosByTagLiveData(AppConstant.DO_WORK).observeForever { workInfoList ->
+                val isWorkEnqueued = workInfoList.any { it.state == WorkInfo.State.ENQUEUED }
+                if(isWorkEnqueued){
+                    Toast.makeText(requireActivity(), "Please stop notifying before logout", Toast.LENGTH_SHORT).show()
+                }else{
+                    val dialog = CustomDialog(requireActivity())
+                    dialog.showDialog(
+                        title = "Log out",
+                        message = "Are you sure, you want to logout?",
+                        positiveButtonText = "LOGOUT",
+                        negativeButtonText = "Cancel",
+                        onPositiveClick = { logout() }
+                    )
+                }
+            }
         }
 
         userIcon.setOnClickListener {
-
+            val dialog = IconsDialog(requireActivity())
+            dialog.showDialog(
+                onImageClick = { imgUrl ->
+                    setIcon(imgUrl)
+                    uploadImageViewModel.updateUserIcon(imgUrl)
+                    dialog.dismissDialog()
+                    uploadImageViewModel.resultState.observe(viewLifecycleOwner) { resultState ->
+                        when (resultState) {
+                            is ResultState.Success -> {
+                                Toast.makeText(context, resultState.successMessage, Toast.LENGTH_SHORT).show()
+                            }
+                            is ResultState.Failure -> {
+                                Toast.makeText(context, resultState.errorMessage, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }
+            )
         }
+    }
+
+    private fun setIcon(iconUrl: String){
+        Glide.with(requireActivity()).load(iconUrl).into(userIcon)
     }
 
     private fun loadUserData(){

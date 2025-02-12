@@ -44,7 +44,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
     private val locationViewModel: LocationViewModel by activityViewModel<LocationViewModel>()
 
     private lateinit var error: TextView
-    private lateinit var map: MapView
+    private var map: MapView? = null
     private lateinit var googleMap: GoogleMap
     private lateinit var notify: Button
 
@@ -65,8 +65,8 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
             map = mapView
             notify = btnNotify
         }
-        map.onCreate(savedInstanceState)
-        map.getMapAsync(this)
+        map?.onCreate(savedInstanceState)
+        map?.getMapAsync(this)
         locationViewModel.isNotifyWorkerStarted(requireActivity())
 
         locationViewModel.error.observe(viewLifecycleOwner){ value ->
@@ -79,7 +79,16 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         }
 
         locationViewModel.isNotifyEnqueue.observe(viewLifecycleOwner){ value ->
-            notify.text = if(value) "STOP\nNOTIFY" else "START\nNOTIFY"
+            if(value){
+                notify.text = "STOP\nNOTIFY"
+                notify.setBackgroundResource(R.drawable.bg_circle_red)
+                notify.setTextColor(resources.getColor(R.color.white, resources.newTheme()))
+            }else{
+                notify.text = "START\nNOTIFY"
+                notify.setBackgroundResource(R.drawable.bg_circle_yellow)
+                notify.setTextColor(resources.getColor(R.color.black, resources.newTheme()))
+            }
+
         }
 
         notify.setOnClickListener {
@@ -237,27 +246,27 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        map.onResume()
+        map?.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        map.onPause()
+        map?.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        map.onDestroy()
+        map?.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        map.onLowMemory()
+        map?.onLowMemory()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        map.onSaveInstanceState(outState)
+        map?.onSaveInstanceState(outState)
     }
 
 }

@@ -10,7 +10,10 @@ import com.safenest.app.model.User
 import com.safenest.app.util.manager.LiveDataManager
 import com.safenest.app.util.manager.SharedPrefManager
 
-class UploadImageViewModel(private val sharedPrefManager: SharedPrefManager, private val firestore: FirebaseFirestore, private val liveDataManager: LiveDataManager) : ViewModel() {
+class UploadImageViewModel(
+    private val sharedPrefManager: SharedPrefManager,
+    private val firestore: FirebaseFirestore,
+    private val liveDataManager: LiveDataManager) : ViewModel() {
 
     private val _resultState = MutableLiveData<ResultState>()
     val resultState: LiveData<ResultState> get() = _resultState
