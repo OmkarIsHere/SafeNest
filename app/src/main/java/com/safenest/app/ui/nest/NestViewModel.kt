@@ -11,7 +11,7 @@ import com.safenest.app.model.Nest
 import com.safenest.app.util.Extension
 import com.safenest.app.util.manager.SharedPrefManager
 
-class NestViewModel(private val firestore : FirebaseFirestore, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
+class NestViewModel(firestore : FirebaseFirestore, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
     private val TAG = "NestViewModel"
     lateinit var nest : Nest
     private var uId = ""

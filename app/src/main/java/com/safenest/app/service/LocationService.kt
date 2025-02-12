@@ -34,29 +34,9 @@ class LocationService : Service() {
 
     private val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + "com.safenest.app" + "/" + R.raw.message_pop_alert)
 
-
-    private val singleLocationRequest by lazy {
-        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
-            .setIntervalMillis(1000).build()
-    }
-
-    private val singleLocationCallback by lazy {
-        object : LocationCallback() {
-            override fun onLocationAvailability(p0: LocationAvailability) {
-                super.onLocationAvailability(p0)
-            }
-
-            override fun onLocationResult(location: LocationResult) {
-                val lat = location.lastLocation?.latitude.toString()
-                val lng = location.lastLocation?.longitude.toString()
-                Log.d(tag, "onLocationResult: $lat, $lng")
-            }
-        }
-    }
-
     private val recurringLocationRequest by lazy {
-        LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, 60000)
-            .setIntervalMillis(60000).build()
+        LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, 120000)
+            .setIntervalMillis(120000).build()
     }
 
     private val recurringLocationCallback by lazy {
@@ -90,44 +70,6 @@ class LocationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         recurringLocationUpdates()
         return START_REDELIVER_INTENT
-    }
-
-    private fun singleLocationUpdates() {
-        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.e(tag, "Location permissions not granted")
-            return
-        }
-
-        fusedLocationProviderClient.requestLocationUpdates(singleLocationRequest, singleLocationCallback, null)
-            .addOnSuccessListener {
-                Log.d(tag, "Location updates successfully requested.")
-            }
-            .addOnFailureListener { exception ->
-                Log.e(tag, "Failed to request location updates: $exception")
-            }
-
-        val settingsClient = LocationServices.getSettingsClient(this)
-        val locationSettingsRequest = LocationSettingsRequest.Builder()
-            .addLocationRequest(singleLocationRequest)
-            .build()
-
-        settingsClient.checkLocationSettings(locationSettingsRequest)
-            .addOnSuccessListener {
-                fusedLocationProviderClient.requestLocationUpdates(singleLocationRequest, singleLocationCallback, null)
-                    .addOnSuccessListener {
-                        Log.d(tag, "Location updates successfully requested.")
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.e(tag, "Failed to request location updates: $exception")
-                    }
-            }
-            .addOnFailureListener { exception ->
-                sendLocationBroadcast(true, "0.0", "0.0")
-                Log.e(tag, "Location settings are not satisfied: $exception")
-            }
     }
 
     private fun recurringLocationUpdates() {
@@ -203,6 +145,5 @@ class LocationService : Service() {
                 Log.d(tag, "Service destroyed")
             }
         }
-//        stopForeground(false)
     }
 }

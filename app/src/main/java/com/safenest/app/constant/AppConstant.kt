@@ -4,6 +4,9 @@ object AppConstant {
 
     const val BASE_URL = "https://fcm.googleapis.com"
 
+    const val MAP_URL = "https://geocode.search.hereapi.com/v1/revgeocode" //?at=19.0760,72.8777&apiKey=JZoA65HTHfMygKfwJRtU335VgfUgD_ADdxzPNNTPAVU"
+    const val HERE_KEY = "JZoA65HTHfMygKfwJRtU335VgfUgD_ADdxzPNNTPAVU"
+
     //Collections
     const val USER = "User"
     const val NEST = "Nest"

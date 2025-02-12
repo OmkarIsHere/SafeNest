@@ -9,6 +9,14 @@
         <item name="android:textSize">@dimen/size_standard_txt</item>
     </style>
 
+    <style name="Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:fontFamily">@font/sf_pro_regular</item>
+        <item name="android:textSize">@dimen/size_smaller_txt</item>
+    </style>
+
     <style name="Medium">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

@@ -28,7 +28,7 @@ class LiveDataManager(firebaseDatabase: FirebaseDatabase, private val sharedPref
         return sharedPrefManager.getString(key, "")
     }
 
-    fun setData(lat: String, lng : String, battery: String){
+    fun setData(latLng: String, battery: String){
         val currentDate = Date()
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val formattedDate = formatter.format(currentDate)
@@ -40,7 +40,7 @@ class LiveDataManager(firebaseDatabase: FirebaseDatabase, private val sharedPref
             userPhone = phone,
             battery = battery,
             userIcon = icon,
-            userLatLng = "$lat, $lng",
+            userLatLng = latLng,
             internet = NetworkUtils.networkType.value,
             dateTime = formattedDate
         )

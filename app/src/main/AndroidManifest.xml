@@ -15,6 +15,8 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 
     <application
         android:name="com.safenest.app.di.SafeNestApp"
@@ -73,6 +75,15 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
         </provider>
+        <receiver
+            android:name=".util.manager.ActivityTransitionReceiver"
+            android:exported="true"
+            android:permission="android.permission.ACTIVITY_RECOGNITION">
+            <intent-filter>
+                <action android:name="com.safenest.ACTIVITY_TRANSITION_UPDATE" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

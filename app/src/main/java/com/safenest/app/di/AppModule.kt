@@ -10,6 +10,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.safenest.app.constant.AppConstant
+import com.safenest.app.repository.MapRepository
+import com.safenest.app.repository.MapRepositoryImpl
 import com.safenest.app.repository.NotificationRepository
 import com.safenest.app.repository.NotificationRepositoryImpl
 import com.safenest.app.service.ApiService
@@ -51,6 +53,7 @@ val appModule = module {
             .create(ApiService::class.java)
     }
     single<NotificationRepository> { NotificationRepositoryImpl(get()) }
+    single<MapRepository> { MapRepositoryImpl(get()) }
 
     viewModel { SignupViewModel(get(), get(), get(), get()) }
     viewModel { LoginViewModel(get(), get(), get()) }
@@ -58,7 +61,7 @@ val appModule = module {
     viewModel { YourNestViewModel(get(), get()) }
     viewModel { UploadImageViewModel(get(), get(), get()) }
     viewModel { ProfileViewModel(get(), get()) }
-    viewModel { LocationViewModel(get(), get()) }
+    viewModel { LocationViewModel(get(), get(), get()) }
 
 }
 

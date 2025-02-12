@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
@@ -15,14 +16,21 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.safenest.app.constant.AppConstant
+import com.safenest.app.model.FullAddress
 import com.safenest.app.model.Member
+import com.safenest.app.model.Response
+import com.safenest.app.repository.MapRepository
 import com.safenest.app.util.manager.LiveDataManager
 import com.safenest.app.util.Miscellaneous
 import com.safenest.app.util.manager.SharedPrefManager
 import com.safenest.app.util.manager.NotifyWorker
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class LocationViewModel(private val liveDataManager: LiveDataManager, private val sharedPrefManager: SharedPrefManager) : ViewModel() {
+class LocationViewModel(
+    private val liveDataManager: LiveDataManager,
+    private val mapRepository: MapRepository,
+    private val sharedPrefManager: SharedPrefManager) : ViewModel() {
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
@@ -39,7 +47,24 @@ class LocationViewModel(private val liveDataManager: LiveDataManager, private va
 
     fun updateDatabase(context: Context, lat: String, lng: String){
         val battery = Miscellaneous(context).getBatteryPercentage()
-        liveDataManager.setData(lat, lng, battery)
+        viewModelScope.launch {
+            try {
+                when (val response = mapRepository.getFullAddress("$lat,$lng")) {
+                    is Response.Success -> {
+                        val address = response.data!!.items[0].address?.label?: ""
+                        Log.d("MapViewModel", "Address: $address")
+                        liveDataManager.setData(address, battery)
+                    }
+                    is Response.Failure -> {
+                        Log.e("MapViewModel", "Error fetching address: ${response.e}")
+                    }
+                }
+
+            } catch (e: Exception) {
+                Log.e("MapViewModel", "updateDatabase: ${e.stackTrace}")
+                liveDataManager.setData("$lat, $lng", battery)
+            }
+        }
     }
 
     fun isNotifyWorkerStarted(context:Context){
@@ -89,9 +114,9 @@ class LocationViewModel(private val liveDataManager: LiveDataManager, private va
                 Log.d("DOWORK", "notifyWork: cancelAllWorkByTag")
             } else {
                 val constraints: Constraints = Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiredNetworkType(NetworkType.CONNECTED)
                     .setRequiresCharging(false)
-                    .setRequiresBatteryNotLow(true)
+                    .setRequiresBatteryNotLow(false)
                     .build()
 
                 val myWorkRequest = PeriodicWorkRequest.Builder(
