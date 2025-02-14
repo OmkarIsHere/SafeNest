@@ -41,31 +41,43 @@ class LocationViewModel(
     private val _isNotifyEnqueue = MutableLiveData<Boolean>()
     val isNotifyEnqueue: LiveData<Boolean> get() = _isNotifyEnqueue
 
+    private val _address = MutableLiveData<String>()
+    val address: LiveData<String> get() = _address
+
     fun setError(str: String){
         _error.value = str
     }
 
     fun updateDatabase(context: Context, lat: String, lng: String){
         val battery = Miscellaneous(context).getBatteryPercentage()
-        viewModelScope.launch {
-            try {
-                when (val response = mapRepository.getFullAddress("$lat,$lng")) {
-                    is Response.Success -> {
-                        val address = response.data!!.items[0].address?.label?: ""
-                        Log.d("MapViewModel", "Address: $address")
-                        liveDataManager.setData(address, battery)
-                    }
-                    is Response.Failure -> {
-                        Log.e("MapViewModel", "Error fetching address: ${response.e}")
-                    }
-                }
+        liveDataManager.setData("$lat, $lng", battery)
+    }
 
-            } catch (e: Exception) {
-                Log.e("MapViewModel", "updateDatabase: ${e.stackTrace}")
-                liveDataManager.setData("$lat, $lng", battery)
-            }
+    fun getAddress(lat: String, lng: String){
+        viewModelScope.launch {
+            _address.value = getAddressFromLatLng(lat, lng)
         }
     }
+
+    private suspend fun getAddressFromLatLng(lat: String, lng: String): String {
+        return try {
+            when (val response = mapRepository.getFullAddress("$lat,$lng")) {
+                is Response.Success -> {
+                    val address = response.data!!.items[0].address?.label ?: ""
+                    Log.d("MapViewModel", "Address: $address")
+                    address
+                }
+                is Response.Failure -> {
+                    Log.e("MapViewModel", "Error fetching address: ${response.e}")
+                    ""
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("MapViewModel", "Error: ${e.stackTrace}")
+            ""
+        }
+    }
+
 
     fun isNotifyWorkerStarted(context:Context){
         val workManager = WorkManager.getInstance(context)
@@ -121,7 +133,7 @@ class LocationViewModel(
 
                 val myWorkRequest = PeriodicWorkRequest.Builder(
                     NotifyWorker::class.java,
-                    15,
+                    30,
                     TimeUnit.MINUTES
                 ).setConstraints(constraints)
                     .addTag(AppConstant.DO_WORK)

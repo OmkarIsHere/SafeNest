@@ -44,11 +44,15 @@ class Extension {
         }
 
         fun convertDateTime(dateTime : String):String{
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault())
+            if(dateTime != "") {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault())
 
-            val date: Date? = inputFormat.parse(dateTime)
-            return date?.let { outputFormat.format(it) } ?: dateTime
+                val date: Date? = inputFormat.parse(dateTime)
+                return date?.let { outputFormat.format(it) } ?: dateTime
+            }else{
+                return ""
+            }
         }
 
     }

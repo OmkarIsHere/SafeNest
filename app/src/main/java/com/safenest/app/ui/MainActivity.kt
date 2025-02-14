@@ -50,28 +50,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val activityReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d("ActivityRecognition", "Received broadcast for activity transition")
-
-            if (ActivityTransitionResult.hasResult(intent)) {
-                val result = ActivityTransitionResult.extractResult(intent!!)!!
-
-                for (event in result.transitionEvents) {
-//                    val activityType = getActivityType(event.activityType)
-                    val transitionType =
-                        if (event.transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                            "Started"
-                        else
-                            "Stopped"
-
-                    Log.d("ActivityRecognition", "transistion : $transitionType")
-                }
-            }else{
-                Log.e("ActivityRecognition", "No activity transition result found in intent")
-            }
-        }
-    }
+//    private val activityReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent?) {
+//            Log.d("ActivityRecognition", "MainActivity: Received broadcast for activity transition")
+//
+//            if (ActivityTransitionResult.hasResult(intent)) {
+//                val result = ActivityTransitionResult.extractResult(intent!!)!!
+//
+//                for (event in result.transitionEvents) {
+////                    val activityType = getActivityType(event.activityType)
+//                    val transitionType =
+//                        if (event.transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+//                            "Started"
+//                        else
+//                            "Stopped"
+//
+//                    Log.d("ActivityRecognition", "MainActivity: transistion : $transitionType")
+//                }
+//            }else{
+//                Log.e("ActivityRecognition", "MainActivity: No activity transition result found in intent")
+//            }
+//        }
+//    }
 
     private val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         arrayOf(
@@ -106,7 +106,6 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannel()
         activityRecognitionService = ActivityRecognitionService(this)
 
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -118,7 +117,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         val filter = IntentFilter("LOCATION_UPDATE")
-        val filter2 = IntentFilter("com.safenest.ACTIVITY_TRANSITION_UPDATE")
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(
                 locationReceiver,
@@ -129,15 +127,16 @@ class MainActivity : AppCompatActivity() {
             registerReceiver(locationReceiver, filter)
         }
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(
-                activityReceiver,
-                filter,
-                RECEIVER_NOT_EXPORTED
-            )
-        }else{
-            registerReceiver(activityReceiver, filter2)
-        }
+//        val filter2 = IntentFilter("ACTIVITY_UPDATE")
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            registerReceiver(
+//                activityReceiver,
+//                filter2,
+//                Context.RECEIVER_EXPORTED
+//            )
+//        }else{
+//            registerReceiver(activityReceiver, filter2)
+//        }
 
         NetworkUtils.startNetworkCallback(this)
         NetworkUtils.networkStatus.observe(this) { isConnected ->
@@ -200,6 +199,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         stopService()
         unregisterReceiver(locationReceiver)
+//        unregisterReceiver(activityReceiver)
         NetworkUtils.stopNetworkCallback(this)
         super.onDestroy()
     }

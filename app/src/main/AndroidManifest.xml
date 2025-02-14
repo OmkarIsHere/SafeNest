@@ -76,14 +76,13 @@
                 tools:node="remove" />
         </provider>
         <receiver
-            android:name=".util.manager.ActivityTransitionReceiver"
-            android:exported="true"
+            android:name=".util.receiver.ActivityTransitionReceiver"
+            android:exported="false"
             android:permission="android.permission.ACTIVITY_RECOGNITION">
             <intent-filter>
-                <action android:name="com.safenest.ACTIVITY_TRANSITION_UPDATE" />
+                <action android:name="ACTIVITY_UPDATE" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

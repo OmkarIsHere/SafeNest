@@ -1,4 +1,4 @@
-package com.safenest.app.util.manager
+package com.safenest.app.util.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -11,23 +11,25 @@ import com.google.android.gms.location.DetectedActivity
 class ActivityTransitionReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("ActivityRecognition", "Received broadcast for activity transition")
+        Log.d("ActivityRecognition", "ActivityTransitionReceiver: Received broadcast for activity transition")
 
         if (ActivityTransitionResult.hasResult(intent)) {
-            val result = ActivityTransitionResult.extractResult(intent!!)!!
+            val result = ActivityTransitionResult.extractResult(intent!!)
 
-            for (event in result.transitionEvents) {
-                val activityType = getActivityType(event.activityType)
-                val transitionType =
-                    if (event.transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        "Started"
-                    else
-                        "Stopped"
+            result?.let {
+                for (event in result.transitionEvents) {
+                    val activityType = getActivityType(event.activityType)
+                    val transitionType =
+                        if (event.transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                            "Started"
+                        else
+                            "Stopped"
 
-                Log.d("ActivityRecognition", "$activityType: $transitionType")
+                    Log.d("ActivityRecognition", "ActivityTransitionReceiver : $activityType: $transitionType")
+                }
             }
         }else{
-            Log.e("ActivityRecognition", "No activity transition result found in intent")
+            Log.e("ActivityRecognition", "ActivityTransitionReceiver : No activity transition result found in intent")
         }
     }
 

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -14,20 +15,21 @@ import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.ActivityTransition
 import com.google.android.gms.location.ActivityTransitionRequest
 import com.google.android.gms.location.DetectedActivity
-import com.safenest.app.util.manager.ActivityTransitionReceiver
+import com.safenest.app.util.receiver.ActivityTransitionReceiver
 
 class ActivityRecognitionService(private val context: Context) {
 
     private val activityRecognitionClient = ActivityRecognition.getClient(context)
+    private val activityTransitionReceiver = ActivityTransitionReceiver()
 
     fun registerActivityTransitions() {
         val request = getActivityTransitionRequest()
-        val intent =  Intent(context, ActivityTransitionReceiver::class.java)
-        intent.action = "com.safenest.ACTIVITY_TRANSITION_UPDATE"
+        val intent = Intent(context, ActivityTransitionReceiver::class.java).setPackage(context.packageName)
+        intent.action = "ACTIVITY_UPDATE"
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            0,
+            10,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
@@ -47,6 +49,21 @@ class ActivityRecognitionService(private val context: Context) {
             .requestActivityTransitionUpdates(request, pendingIntent)
             .addOnSuccessListener {
                 Log.d("ActivityRecognition", "Successfully registered for activity transitions")
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    context.registerReceiver(ActivityTransitionReceiver(),
+                        IntentFilter("ACTIVITY_UPDATE"),
+                        Context.RECEIVER_NOT_EXPORTED)
+                }else{
+                    context.registerReceiver(ActivityTransitionReceiver(),
+                        IntentFilter("ACTIVITY_UPDATE"))
+                }
+
+                val testIntent = Intent("ACTIVITY_UPDATE")
+                context.sendBroadcast(testIntent)
+
+                Log.d("ActivityRecognition", "Called : Dynamic registration")
             }
             .addOnFailureListener { e ->
                 Log.e("ActivityRecognition", "Failed to register for activity transitions", e)
@@ -54,12 +71,12 @@ class ActivityRecognitionService(private val context: Context) {
     }
 
     fun unregisterActivityTransitions() {
-        val intent = Intent(context, ActivityTransitionReceiver::class.java)
-        intent.action = "com.safenest.ACTIVITY_TRANSITION_UPDATE"
+        val intent = Intent(context, ActivityTransitionReceiver::class.java).setPackage(context.packageName)
+        intent.action = "ACTIVITY_UPDATE"
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            0,
+            10,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )

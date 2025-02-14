@@ -112,18 +112,20 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
             if(member.isNotEmpty()){
                 markerMap.clear()
                 for(m in member){
-                    val str = m.userLatLng!!.split(",")
-                    latLng = LatLng(str.first().toDouble(), str.last().toDouble())
+                    if(m.userLatLng != null && m.userLatLng != "") {
+                        val str = m.userLatLng!!.split(",")
+                        latLng = LatLng(str.first().toDouble(), str.last().toDouble())
 
-                    customMarker(requireContext(), m.userIcon!!) { bitmapDescriptor ->
-                        val marker = googleMap.addMarker(
-                            MarkerOptions()
-                                .position(latLng)
-                                .icon(bitmapDescriptor)
-                        )
+                        customMarker(requireContext(), m.userIcon!!) { bitmapDescriptor ->
+                            val marker = googleMap.addMarker(
+                                MarkerOptions()
+                                    .position(latLng)
+                                    .icon(bitmapDescriptor)
+                            )
 
-                        marker?.let {
-                            markerMap[it] = m
+                            marker?.let {
+                                markerMap[it] = m
+                            }
                         }
                     }
                 }
@@ -205,12 +207,24 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         val mName = view.findViewById<TextView>(R.id.txtMemberName)
         val mPhone = view.findViewById<TextView>(R.id.txtMemberPhone)
         val dateTime = view.findViewById<TextView>(R.id.txtDateTime)
+        val address = view.findViewById<TextView>(R.id.txtAddress)
         val location = view.findViewById<TextView>(R.id.txtMemberLocation)
         val battery = view.findViewById<TextView>(R.id.txtMemberBattery)
         val network = view.findViewById<TextView>(R.id.txtMemberNetwork)
         val call = view.findViewById<ConstraintLayout>(R.id.callView)
         val message = view.findViewById<ConstraintLayout>(R.id.messageView)
 
+        if(member.userLatLng != null && member.userLatLng != "") {
+            val str = member.userLatLng!!.split(", ")
+            locationViewModel.getAddress(str.first(), str.last()).toString()
+        }
+        locationViewModel.address.observe(viewLifecycleOwner){ value ->
+            if(value.isNotEmpty()){
+                address.text = value
+            }else{
+                address.text = ""
+            }
+        }
         Glide.with(context).load(member.userIcon).into(mImg)
         mName.text = member.userName
         mPhone.text = member.userPhone

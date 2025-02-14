@@ -21,7 +21,7 @@ class MemberAdapter(private val context: Context, private val members : ArrayLis
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.memberName.text = "Name: ${members[position].userName}"
+        holder.memberName.text = "Name: ${members[position].userName?: ""}"
         holder.lastSeen.text = "Last seen: ${Extension.convertDateTime(members[position].dateTime?: "")}"
         if(members[position].userIcon!!.isNotEmpty()){
             Glide.with(context).load(members[position].userIcon).into(holder.userIcon)
@@ -36,7 +36,6 @@ class MemberAdapter(private val context: Context, private val members : ArrayLis
         val memberName: TextView = itemView.findViewById(R.id.txtUserName)
         val lastSeen: TextView = itemView.findViewById(R.id.txtLastSeen)
         val userIcon: ImageView = itemView.findViewById(R.id.imgUserIcon)
-
     }
 
 }
