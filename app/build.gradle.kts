@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.util.Properties
 import java.io.FileInputStream
 
@@ -11,6 +12,21 @@ val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
+val gradleProperties = gradleLocalProperties(rootDir, providers)
+val type : String = gradleProperties.getProperty("type", "")
+val projectId : String = gradleProperties.getProperty("project_id", "")
+val privateKeyId : String = gradleProperties.getProperty("private_key_id", "")
+val privateKey : String = gradleProperties.getProperty("private_key", "")
+val clientEmail : String = gradleProperties.getProperty("client_email", "")
+val clientId : String = gradleProperties.getProperty("client_id", "")
+val authUri : String = gradleProperties.getProperty("auth_uri", "")
+val tokenUri : String = gradleProperties.getProperty("token_uri", "")
+val authProviderX509CertUrl : String = gradleProperties.getProperty("auth_provider_x509_cert_url", "")
+val clientX509CertUrl : String = gradleProperties.getProperty("client_x509_cert_url", "")
+val universeDomain : String = gradleProperties.getProperty("universe_domain", "")
+val mapApi : String = gradleProperties.getProperty("map_api", "")
+val hereApi : String = gradleProperties.getProperty("here_api", "")
+
 android {
     namespace = "com.safenest.app"
     compileSdk = 34
@@ -23,6 +39,20 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue("string", "type", type)
+        resValue("string", "projectId", projectId)
+        resValue("string", "privateKeyId", privateKeyId)
+        resValue("string", "privateKey", privateKey)
+        resValue("string", "clientEmail", clientEmail)
+        resValue("string", "clientId", clientId)
+        resValue("string", "authUri",  authUri)
+        resValue("string", "tokenUri",  tokenUri)
+        resValue("string", "authProviderX509CertUrl", authProviderX509CertUrl)
+        resValue("string", "clientX509CertUrl", clientX509CertUrl)
+        resValue("string", "universeDomain", universeDomain)
+        resValue("string", "mapApi", mapApi)
+        resValue("string", "hereApi", hereApi)
     }
 
     signingConfigs {

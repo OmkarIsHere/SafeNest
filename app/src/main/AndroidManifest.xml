@@ -61,7 +61,7 @@
         </service>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_api" />
+            android:value="@string/mapApi" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icon" />
