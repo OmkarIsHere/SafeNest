@@ -141,6 +141,7 @@ class NotifyWorker(context: Context, params: WorkerParameters) : CoroutineWorker
     private suspend fun generateBearerToken(context : Context): String {
         return withContext(Dispatchers.IO) {
             try {
+
                 val jsonKey = """
                 {
                   "type": "${getString(context, R.string.type)}",
