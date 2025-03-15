@@ -3,7 +3,16 @@
 SafeNest is a family tracking app designed to provide real-time location tracking, enhanced safety features, and seamless communication among family members.
 
 ## Screenshots
-![screenshot](images/screenshot.png)
+![screenshot](https://github.com/user-attachments/assets/07046c26-9e8d-44e2-91b1-755905a220ee) 
+![screenshot](https://github.com/user-attachments/assets/6278b268-51e2-45c9-9da1-bac1beaea4dc)
+![screenshot](https://github.com/user-attachments/assets/6fb94cea-fdfe-4229-8ec3-254f33663308)
+![screenshot](https://github.com/user-attachments/assets/71683d46-0d77-47af-9c8c-31d5d414ddc6)
+![screenshot](https://github.com/user-attachments/assets/9b0743c2-69d3-4b28-aeb5-6658310487e1)
+![screenshot](https://github.com/user-attachments/assets/031ceee6-a48e-41a1-af48-92f4cd9cd917)
+![screenshot](https://github.com/user-attachments/assets/a371c381-f504-4aed-8149-c1a93a596990)
+![screenshot](https://github.com/user-attachments/assets/f8dea959-6171-4032-8d00-7a691b18b99a)
+![screenshot](https://github.com/user-attachments/assets/14b54bcd-9777-4967-b251-77d1942320ed)
+![screenshot](https://github.com/user-attachments/assets/4bc4c4e0-623e-4e96-8d25-fe69017444c2)
 
 ## 📌 Features
 
